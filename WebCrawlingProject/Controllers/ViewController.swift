@@ -114,13 +114,14 @@ import UIKit
 import FSCalendar
 import FirebaseCore
 import FirebaseFirestore
-
+import GoogleMobileAds // 광고 추가
 
 
 
 class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, UITextFieldDelegate {
     
     
+    var bannerView: GADBannerView!
     
     
     // 파이어베이스
@@ -173,6 +174,21 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 광고 추가
+        let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
+        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
+        bannerView = GADBannerView(adSize: adaptiveSize)
+        
+        // Set ad unit ID (replace with your actual ad unit ID)
+        bannerView.adUnitID = "ca-app-pub-1780050413977337/7873364664"
+        bannerView.rootViewController = self
+        
+        // Load an ad.
+        bannerView.load(GADRequest())
+        //
+
+            
         
         calendar.delegate = self
         calendar.dataSource = self
@@ -227,6 +243,21 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     }
     
     
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+            bannerView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(bannerView)
+            
+            // Add constraints to position the banner view at the bottom like a tab bar.
+            NSLayoutConstraint.activate([
+                bannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                bannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                bannerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            ])
+        }
+     
+  
+    
+    
     
     // 네비게이션 바 아이템
     private func configureItems() {
@@ -263,9 +294,11 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     fileprivate func applyConstraints() {
         
+        // 광고 UI Constraints
+        addBannerViewToView(bannerView)
+        
+        
         view.backgroundColor = UIColor(hexCode: "#222f3e") // backgroundColor
-        
-        
         view.addSubview(calendar)
         view.addSubview(self.tableView)
         
@@ -281,13 +314,13 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         NSLayoutConstraint.activate([
             calendar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             calendar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 120), // 조정된 위치
-            calendar.heightAnchor.constraint(equalToConstant: 200) // 조정된 높이
+            calendar.topAnchor.constraint(equalTo: bannerView.bottomAnchor, constant: 0), // 조정된 위치
+            calendar.heightAnchor.constraint(equalToConstant: 120) // 조정된 높이
         ])
         
         // 테이블 UI
         NSLayoutConstraint.activate([
-            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 170),
+            self.tableView.topAnchor.constraint(equalTo: self.calendar.bottomAnchor, constant: 0),
             self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)

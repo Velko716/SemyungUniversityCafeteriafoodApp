@@ -20,7 +20,7 @@ import BackgroundTasks
 // FirebaseNotifications
 import FirebaseInAppMessagingSwift
 import FirebaseMessaging
-
+import GoogleMobileAds    // 광고 추가
 
 
 @main
@@ -29,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        GADMobileAds.sharedInstance().start(completionHandler: nil)    // 광고 추가
+        
         
         // 아침메뉴 가져오기
         FirebaseApp.configure()
