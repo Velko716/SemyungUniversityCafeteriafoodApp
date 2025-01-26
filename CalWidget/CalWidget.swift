@@ -29,8 +29,10 @@ let dateFormatter: DateFormatter = {
 
 
 
-
 struct Provider: TimelineProvider {
+    
+  
+    
     
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(),currentDate: "", titleCurrentDate: "" ,emoji: "", lunch: "", dinner: "")

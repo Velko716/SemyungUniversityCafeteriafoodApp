@@ -33,7 +33,7 @@ class BellViewController: UIViewController, UNUserNotificationCenterDelegate  {
         
         
         
-        navigationItem.title = "알림 설정"
+        navigationItem.title = "설정"
         
        
         // Set navigation bar title text color to black
@@ -228,7 +228,7 @@ extension BellViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return "설정  (조식 - 8:30, 중식 - 11:30, 석식 - 17:30)"
+            return "설정  (조식 - 8:30, 중식 - 11:00, 석식 - 17:30)"
         } else if section == 1 {
             return "앱 정보"
         } else {return ""}

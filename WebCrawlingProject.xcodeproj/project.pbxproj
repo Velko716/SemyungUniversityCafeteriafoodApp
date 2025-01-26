@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C965B00A2D43A34100483F81 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C965B0092D43A33600483F81 /* DateExtension.swift */; };
+		C965B00C2D43A41F00483F81 /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C965B00B2D43A41F00483F81 /* BackgroundTask.swift */; };
 		DE2C7FFA2BBFB1280036B524 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2C7FF92BBFB1280036B524 /* UIColorExtension.swift */; };
 		DE2C7FFC2BBFB2150036B524 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2C7FFB2BBFB2150036B524 /* UIImageExtension.swift */; };
 		DE2C7FFE2BBFB3360036B524 /* FSCalendarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2C7FFD2BBFB3360036B524 /* FSCalendarExtension.swift */; };
@@ -65,6 +67,8 @@
 
 /* Begin PBXFileReference section */
 		5EEA7539B0386A136A69209D /* Pods-WebCrawlingProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebCrawlingProject.debug.xcconfig"; path = "Target Support Files/Pods-WebCrawlingProject/Pods-WebCrawlingProject.debug.xcconfig"; sourceTree = "<group>"; };
+		C965B0092D43A33600483F81 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		C965B00B2D43A41F00483F81 /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
 		D3295520D03654DD5AD4B30B /* Pods-WebCrawlingProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebCrawlingProject.release.xcconfig"; path = "Target Support Files/Pods-WebCrawlingProject/Pods-WebCrawlingProject.release.xcconfig"; sourceTree = "<group>"; };
 		DE2C7FF92BBFB1280036B524 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		DE2C7FFB2BBFB2150036B524 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 		DE2C7FF82BBFB0900036B524 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				C965B0092D43A33600483F81 /* DateExtension.swift */,
 				DEB9E56E2B9594830084C269 /* Assets.xcassets */,
 				DEB9E5622B9594820084C269 /* AppDelegate.swift */,
 				DEB9E5642B9594820084C269 /* SceneDelegate.swift */,
@@ -170,6 +175,7 @@
 			children = (
 				DE46F4FB2BA6E1A50042A285 /* Data.swift */,
 				DE2C80002BC12E9D0036B524 /* MealType.swift */,
+				C965B00B2D43A41F00483F81 /* BackgroundTask.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -412,6 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEB9E58B2B96D8370084C269 /* HouseViewController.swift in Sources */,
+				C965B00A2D43A34100483F81 /* DateExtension.swift in Sources */,
 				DEB9E5672B9594820084C269 /* ViewController.swift in Sources */,
 				DE2C80012BC12E9D0036B524 /* MealType.swift in Sources */,
 				DEB9E5632B9594820084C269 /* AppDelegate.swift in Sources */,
@@ -419,6 +426,7 @@
 				DE2C7FFE2BBFB3360036B524 /* FSCalendarExtension.swift in Sources */,
 				DEB9E56D2B9594820084C269 /* WebCrawlingProject.xcdatamodeld in Sources */,
 				DE2C7FFC2BBFB2150036B524 /* UIImageExtension.swift in Sources */,
+				C965B00C2D43A41F00483F81 /* BackgroundTask.swift in Sources */,
 				DE2C7FFA2BBFB1280036B524 /* UIColorExtension.swift in Sources */,
 				DEB9E5972B9AC4600084C269 /* BellViewController.swift in Sources */,
 				DE46F4FC2BA6E1A50042A285 /* Data.swift in Sources */,
@@ -666,7 +674,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.SemyungUniversityCafeteriafoodApp.ManduU2App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -703,7 +711,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.SemyungUniversityCafeteriafoodApp.ManduU2App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

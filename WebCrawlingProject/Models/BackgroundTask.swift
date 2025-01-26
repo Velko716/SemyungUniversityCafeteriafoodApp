@@ -1,94 +1,81 @@
 //
-//  SceneDelegate.swift
+//  BackgroundTask.swift
 //  WebCrawlingProject
 //
-//  Created by 김진혁 on 3/4/24.
+//  Created by 김진혁 on 1/24/25.
 //
 
 import UIKit
-import FirebaseFirestore
 import BackgroundTasks
+import Firebase
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
-    var window: UIWindow?
-    
+// 25/1/23 추가
+class SchedulingService {
+    static let shared = SchedulingService()
     let db = Firestore.firestore()
-
-
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
+    func registerBackgroundTasks() {
+        let isRegistered = BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.example.dateRefresh", using: nil) { task in
+            print("Background task is executing: \(task.identifier)")
+            self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        }
+        print("Is the background task registered? \(isRegistered)")
+    }
+    
+    func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: "com.example.dateRefresh")
         
-        // ? AppDelegate
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
-            if granted {
-                print("Notification permission granted")
-            }
+        // 한국 시간 기준 00:10으로 설정
+        let timeZone = TimeZone(identifier: "Asia/Seoul")!
+        if let nextRefreshTime = Date().settingTime(hour: 0, minute: 10, timeZone: timeZone) {
+            request.earliestBeginDate = nextRefreshTime
+            print("earliestBeginDate 설정: \(nextRefreshTime)") // 로그 출력
+        } else {
+            print("earliestBeginDate 설정 실패")
         }
         
+        //request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 2) // 2분 마다의 작업 (테스트 용)
         
-        // add NavigationController
-        guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        window = UIWindow(windowScene: windowScene)
-        let mainViewController = ViewController()
-        let navigationController = UINavigationController(rootViewController: mainViewController)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        //  e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateExpirationForTaskWithIdentifier:@"com.example.dateRefresh"]
+        do {
+            try BGTaskScheduler.shared.submit(request)
+            print("breakPoint")
+            // breakPoint
+        } catch {
+            print("Could not schedule app refresh: \(error)")
+        }
+    }
+    
+    private func handleAppRefresh(task: BGAppRefreshTask) {
+        // <!-- Your background logic here -->
+        // <!-- LocalNotificationService.sharedInstance.initScheduleNotifications() -->
+        print("handleAppRefresh")
         
+        // background 알림 등록
+        notification()
+        
+        print("handleAppRefreshFinsh")
+        
+        task.setTaskCompleted(success: true)
+        
+        print("handleAppRefreshComplete")
+        
+        scheduleAppRefresh()
     }
     
     
-    
-    
-
-    func sceneDidDisconnect(_ scene: UIScene) {
-       
-        
-        
-        
-        
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-       
-        
-        
-    }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-        
-        
-        
-    }
-    
-    
-    
-    
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        
-        UIApplication.shared.applicationIconBadgeNumber = 0
-        //self.notification()
-        
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        
-        // 백그라운드 작업 예약
-        SchedulingService.shared.scheduleAppRefresh()
-        
-        //(UIApplication.shared.delegate as? AppDelegate)?.saveContext()
-        // self.notification()
-    }
     
     func notification() {
         
         getBreakfastMenu { (breakfastMenu, error) in
-            guard let breakfastMenu = breakfastMenu else {
+            guard let breakfastMenu = breakfastMenu  else {
                 print("Error getting breakfast menu: \(error?.localizedDescription ?? "Unknown error")")
+                
                 return
             }
+            
+            
             
             // 점심메뉴 가져오기
             self.getLunchMenu { (lunchMenu, error) in
@@ -135,7 +122,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     let formatter2 = DateFormatter()
                     formatter2.dateFormat = "YYYY-MM-dd HH:mm:ss"
                     let formatter2Date = formatter2.string(from: Date())
-
                     
                     let current_date_string = formatter.string(from: Date())
                     //let current_date_string2 = formatter2.string(from: Date())
@@ -171,7 +157,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     
                     
                     
-                    // 두 번째 알림: 11:30
+                    // 두 번째 알림: 11:00
                     var dateComponents2 = DateComponents()
                     dateComponents2.hour = 11
                     dateComponents2.minute = 00
@@ -214,19 +200,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    
+    
     // 아침메뉴 가져오기
     func getBreakfastMenu(completion: @escaping (String?, Error?) -> Void) {
         
         print("getBreakfastMenu")
         
-        let currentDate = UserDefaults.standard.value(forKey: "currentDate")
         
         // 현재 날짜 데이터 포맷
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let current_date_string = formatter.string(from: Date())
         
-        let docRef = db.collection("Menu").document(currentDate as! String)
+        let docRef = db.collection("Menu").document(current_date_string)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if let breakfastMenu = document.data()?["아침메뉴"] as? String {
@@ -247,14 +234,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // 점심메뉴 가져오기
     func getLunchMenu(completion: @escaping (String?, Error?) -> Void) {
         
-        let currentDate = UserDefaults.standard.value(forKey: "currentDate")
+        
         
         // 현재 날짜 데이터 포맷
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let current_date_string = formatter.string(from: Date())
         
-        let docRef = db.collection("Menu").document(currentDate as! String)
+        let docRef = db.collection("Menu").document(current_date_string)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if let lunchMenu = document.data()?["점심메뉴"] as? String {
@@ -273,14 +260,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // 저녁메뉴 가져오기
     func getDinnerMenu(completion: @escaping (String?, Error?) -> Void) {
         
-        let currentDate = UserDefaults.standard.value(forKey: "currentDate")
+        
         
         // 현재 날짜 데이터 포맷
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let current_date_string = formatter.string(from: Date())
         
-        let docRef = db.collection("Menu").document(currentDate as! String)
+        let docRef = db.collection("Menu").document(current_date_string)
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if let dinnerMenu = document.data()?["저녁메뉴"] as? String {
@@ -295,13 +282,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-
+    
+    
+    
+    
+    
+    
+    
+    
 }
-
-
-
-
-
-
-
-

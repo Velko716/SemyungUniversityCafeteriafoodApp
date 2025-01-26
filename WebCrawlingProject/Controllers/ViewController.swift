@@ -168,7 +168,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     // 식단 테이블을 위한 데이터
     var data: [[String]] = [[""], [""], [""]]
-    let header = ["조식","중식","석식"]
+    let header = ["조식 (08 : 30 ~ 09 : 20)","중식 (11 : 00 ~ 14 : 30)","석식 (17 : 30 ~ 18 : 50)"]
     
     
     
