@@ -143,11 +143,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // 로컬 알림
-        
         UNUserNotificationCenter.current().delegate = self
         
     
-        
+        // 백그라운드 작업 등록
         SchedulingService.shared.registerBackgroundTasks()
         
         return true
