@@ -89,7 +89,7 @@ class SchedulingService {
                     }
                     
                     
-//                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음
+//                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음 (로직수정)
                     if breakfastMenu == "아직 식단이 등록되지 않았습니다." || breakfastMenu == "" { return }
 //                    
 //                    
