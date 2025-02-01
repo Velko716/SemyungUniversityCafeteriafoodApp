@@ -35,7 +35,7 @@ class SchedulingService {
 //        }
         
         request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 2) // 2분 마다의 작업 (테스트 용)
-        
+        // 이거 안되면 메모리해체 쪽 보기 ⭐️
         
         //  e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateExpirationForTaskWithIdentifier:@"com.example.dateRefresh"]
         do {
