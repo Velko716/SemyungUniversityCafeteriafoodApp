@@ -26,15 +26,15 @@ class SchedulingService {
         let request = BGAppRefreshTaskRequest(identifier: "com.example.dateRefresh")
         
         // 한국 시간 기준 00:10으로 설정
-//        let timeZone = TimeZone(identifier: "Asia/Seoul")!
-//        if let nextRefreshTime = Date().settingTime(hour: 0, minute: 10, timeZone: timeZone) {
-//            request.earliestBeginDate = nextRefreshTime
-//            print("earliestBeginDate 설정: \(nextRefreshTime)") // 로그 출력
-//        } else {
-//            print("earliestBeginDate 설정 실패")
-//        }
+        let timeZone = TimeZone(identifier: "Asia/Seoul")!
+        if let nextRefreshTime = Date().settingTime(hour: 0, minute: 10, timeZone: timeZone) {
+            request.earliestBeginDate = nextRefreshTime
+            print("earliestBeginDate 설정: \(nextRefreshTime)") // 로그 출력
+        } else {
+            print("earliestBeginDate 설정 실패")
+        }
         
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 2) // 2분 마다의 작업 (테스트 용)
+        // request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 2) // 2분 마다의 작업 (테스트 용)
         // 이거 안되면 메모리해체 쪽 보기 ⭐️
         // 25 / 02 / 02
         
@@ -54,9 +54,13 @@ class SchedulingService {
         // <!-- LocalNotificationService.sharedInstance.initScheduleNotifications() -->
         print("handleAppRefresh")
         
+        // < 테스트 > 현재 상황 : 알림이 등록은 되지만 전의 기록이 남아있음. 그래서 전의 기록을 전부 제거하고 다시 알림을 등록하는 로직 추가.
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removeAllDeliveredNotifications()
+        
         // background 알림 등록
         notification()
-        
+
         print("handleAppRefreshFinsh")
         
         task.setTaskCompleted(success: true)
