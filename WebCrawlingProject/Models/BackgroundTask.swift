@@ -25,7 +25,7 @@ class SchedulingService {
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: "com.example.dateRefresh")
         
-        // 한국 시간 기준 00:10으로 설정
+//        // 한국 시간 기준 00:10으로 설정
         let timeZone = TimeZone(identifier: "Asia/Seoul")!
         if let nextRefreshTime = Date().settingTime(hour: 0, minute: 10, timeZone: timeZone) {
             request.earliestBeginDate = nextRefreshTime
@@ -34,7 +34,7 @@ class SchedulingService {
             print("earliestBeginDate 설정 실패")
         }
         
-        // request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 2) // 2분 마다의 작업 (테스트 용)
+         //request.earliestBeginDate = Date(timeIntervalSinceNow: 60 * 2) // 2분 마다의 작업 (테스트 용)
         // 이거 안되면 메모리해체 쪽 보기 ⭐️
         // 25 / 02 / 02
         
@@ -55,234 +55,169 @@ class SchedulingService {
         print("handleAppRefresh")
         
         // < 테스트 > 현재 상황 : 알림이 등록은 되지만 전의 기록이 남아있음. 그래서 전의 기록을 전부 제거하고 다시 알림을 등록하는 로직 추가.
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllDeliveredNotifications()
+        // 앱에 오랫동안 접속하지 않으면, 백그라운드 작업이 실행되지 않을 수도 있다고 함! (그래서 전 날 날짜의 식단을 계속 불러오는 것)
+        // 그래서 이 notificat을 취소시키는거는 아닐뜻
+//        let notificationCenter = UNUserNotificationCenter.current()
+//        notificationCenter.removeAllDeliveredNotifications()
+        
+        
+        
         
         // background 알림 등록
-        notification()
-
-        print("handleAppRefreshFinsh")
+        //notification()
+        //print("handleAppRefreshFinsh")
+        
+        // 현재 날짜 데이터 포맷
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        let currentDateString = formatter.string(from: Date())
+        
+        // 백그라운드에서 현재 날짜 저장
+        UserDefaults.standard.set(currentDateString, forKey: "saveCurrentDate")
+        
         
         task.setTaskCompleted(success: true)
         
-        print("handleAppRefreshComplete")
+        //print("handleAppRefreshComplete")
         
         scheduleAppRefresh()
     }
     
     
     
-    func notification() {
-        
-        
-        getBreakfastMenu { [self] (breakfastMenu, error) in
-            guard let breakfastMenu = breakfastMenu  else {
-                print("Error getting breakfast menu: \(error?.localizedDescription ?? "Unknown error")")
-                
-                return
-            }
-            
-            getLunchMenu { [self] (lunchMenu, error) in
-                guard let lunchMenu = lunchMenu else {
-                    print("Error getting lunch menu: \(error?.localizedDescription ?? "Unknown error")")
-                    return
-                }
-                
-                getDinnerMenu { (dinnerMenu, error) in
-                    guard let dinnerMenu = dinnerMenu else {
-                        print("Error getting dinner menu: \(error?.localizedDescription ?? "Unknown error")")
-                        return
-                    }
-                    
-                    
-                    
-                    /*
-                     아침 메뉴가 등록되지 않으면, 해당 날짜의 알림이 전체 울리지 않음.
-                     학생식당은 아침을 반드시 하기 때문에.
-                     
-                     */
-                    
-//                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음 (로직수정)
-                    if breakfastMenu == "아직 식단이 등록되지 않았습니다." || breakfastMenu == "" { return }
+//    func notification() {
+//        
+//        
+//        getBreakfastMenu { [self] (breakfastMenu, error) in
+//            guard let breakfastMenu = breakfastMenu  else {
+//                print("Error getting breakfast menu: \(error?.localizedDescription ?? "Unknown error")")
+//                
+//                return
+//            }
+//            
+//            getLunchMenu { [self] (lunchMenu, error) in
+//                guard let lunchMenu = lunchMenu else {
+//                    print("Error getting lunch menu: \(error?.localizedDescription ?? "Unknown error")")
+//                    return
+//                }
+//                
+//                getDinnerMenu { (dinnerMenu, error) in
+//                    guard let dinnerMenu = dinnerMenu else {
+//                        print("Error getting dinner menu: \(error?.localizedDescription ?? "Unknown error")")
+//                        return
+//                    }
 //                    
 //                    
-//                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음
-//                    if lunchMenus == "아직 식단이 등록되지 않았습니다." || lunchMenus == "" { return }
+//                    
+//                    /*
+//                     아침 메뉴가 등록되지 않으면, 해당 날짜의 알림이 전체 울리지 않음.
+//                     학생식당은 아침을 반드시 하기 때문에.
+//                     
+//                     */
+//                    
+////                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음 (로직수정)
+////                    if breakfastMenu == "아직 식단이 등록되지 않았습니다." || breakfastMenu == "" { return }
+////
+////                    
+////                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음
+////                    if lunchMenus == "아직 식단이 등록되지 않았습니다." || lunchMenus == "" { return }
+////                    
+////                    
+////                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음
+////                    if dinnerMenus == "아직 식단이 등록되지 않았습니다." || dinnerMenus == "" { return }
 //                    
 //                    
-//                    // "아직 식단이 등록되지 않았습니다."일 경우 알림을 보내지 않음
-//                    if dinnerMenus == "아직 식단이 등록되지 않았습니다." || dinnerMenus == "" { return }
-                    
-                    
-                    
-                    
-                    
-                    // 현재 날짜 데이터 포맷
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "YYYY-MM-dd"
-                    
-                    // FIXME: - 임시 테스트
-                    let formatter2 = DateFormatter()
-                    formatter2.dateFormat = "YYYY-MM-dd HH:mm:ss"
-                    let formatter2Date = formatter2.string(from: Date())
-                    
-                    let current_date_string = formatter.string(from: Date())
-                    //let current_date_string2 = formatter2.string(from: Date())
-                    
-                    
-                    
-                    let content = UNMutableNotificationContent()
-                    content.title = "세명대학교 조식"
-                    content.body = breakfastMenu
-                    content.sound = UNNotificationSound.default
-                    
-                    
-                    
-                    let content2 = UNMutableNotificationContent()
-                    content2.title = "세명대학교 중식"
-                    content2.body = lunchMenu
-                    content2.sound = UNNotificationSound.default
-                    
-                    
-                    
-                    let content3 = UNMutableNotificationContent()
-                    content3.title = "세명대학교 석식"
-                    content3.body = dinnerMenu
-                    content3.sound = UNNotificationSound.default
-                    
-                    
-                    
-                    // 첫 번째 알림: 08:30
-                    var dateComponents1 = DateComponents()
-                    dateComponents1.hour = 08
-                    dateComponents1.minute = 30
-                    let trigger1 = UNCalendarNotificationTrigger(dateMatching: dateComponents1, repeats: true)
-                    let request1 = UNNotificationRequest(identifier: "uniqueIdentifier1", content: content, trigger: trigger1)
-                    
-                    
-                    
-                    // 두 번째 알림: 11:00
-                    var dateComponents2 = DateComponents()
-                    dateComponents2.hour = 11
-                    dateComponents2.minute = 00
-                    let trigger2 = UNCalendarNotificationTrigger(dateMatching: dateComponents2, repeats: true)
-                    let request2 = UNNotificationRequest(identifier: "uniqueIdentifier2", content: content2, trigger: trigger2)
-                    
-                    
-                    // repeats가 기존에는 false였음.
-                    
-                    // 세 번째 알림: 17:30
-                    var dateComponents3 = DateComponents()
-                    dateComponents3.hour = 17
-                    dateComponents3.minute = 30
-                    let trigger3 = UNCalendarNotificationTrigger(dateMatching: dateComponents3, repeats: true)
-                    let request3 = UNNotificationRequest(identifier: "uniqueIdentifier3", content: content3, trigger: trigger3)
-                    
-                    
-                    
-                    
-                    let notificationCenter = UNUserNotificationCenter.current()
-                    
-                    
-                    notificationCenter.add(request1) { (error) in
-                        if let error = error {
-                            print("Error adding notification request1: \(error)")
-                        }
-                    }
-                    notificationCenter.add(request2) { (error) in
-                        if let error = error {
-                            print("Error adding notification request2: \(error)")
-                        }
-                    }
-                    notificationCenter.add(request3) { (error) in
-                        if let error = error {
-                            print("Error adding notification request3: \(error)")
-                        }
-                    }
-                }
-            }
-        }
-        
-    }
+//                    
+//                    
+//                    
+//                    // 현재 날짜 데이터 포맷
+//                    let formatter = DateFormatter()
+//                    formatter.dateFormat = "YYYY-MM-dd"
+//                    
+//                    // FIXME: - 임시 테스트
+//                    let formatter2 = DateFormatter()
+//                    formatter2.dateFormat = "YYYY-MM-dd HH:mm:ss"
+//                    let formatter2Date = formatter2.string(from: Date())
+//                    
+//                    let current_date_string = formatter.string(from: Date())
+//                    //let current_date_string2 = formatter2.string(from: Date())
+//                    
+//                    
+//                    
+//                    let content = UNMutableNotificationContent()
+//                    content.title = "세명대학교 조식"
+//                    content.body = breakfastMenu
+//                    content.sound = UNNotificationSound.default
+//                    
+//                    
+//                    
+//                    let content2 = UNMutableNotificationContent()
+//                    content2.title = "세명대학교 중식"
+//                    content2.body = lunchMenu
+//                    content2.sound = UNNotificationSound.default
+//                    
+//                    
+//                    
+//                    let content3 = UNMutableNotificationContent()
+//                    content3.title = "세명대학교 석식"
+//                    content3.body = dinnerMenu
+//                    content3.sound = UNNotificationSound.default
+//                    
+//                    
+//                    
+//                    // 첫 번째 알림: 08:30
+//                    var dateComponents1 = DateComponents()
+//                    dateComponents1.hour = 08
+//                    dateComponents1.minute = 30
+//                    let trigger1 = UNCalendarNotificationTrigger(dateMatching: dateComponents1, repeats: true)
+//                    let request1 = UNNotificationRequest(identifier: "uniqueIdentifier1", content: content, trigger: trigger1)
+//                    
+//                    
+//                    
+//                    // 두 번째 알림: 11:00
+//                    var dateComponents2 = DateComponents()
+//                    dateComponents2.hour = 11
+//                    dateComponents2.minute = 00
+//                    let trigger2 = UNCalendarNotificationTrigger(dateMatching: dateComponents2, repeats: true)
+//                    let request2 = UNNotificationRequest(identifier: "uniqueIdentifier2", content: content2, trigger: trigger2)
+//                    
+//                    
+//                    // repeats가 기존에는 false였음.
+//                    
+//                    // 세 번째 알림: 17:30
+//                    var dateComponents3 = DateComponents()
+//                    dateComponents3.hour = 17
+//                    dateComponents3.minute = 30
+//                    let trigger3 = UNCalendarNotificationTrigger(dateMatching: dateComponents3, repeats: true)
+//                    let request3 = UNNotificationRequest(identifier: "uniqueIdentifier3", content: content3, trigger: trigger3)
+//                    
+//                    
+//                    
+//                    
+//                    let notificationCenter = UNUserNotificationCenter.current()
+//                    
+//                    
+//                    notificationCenter.add(request1) { (error) in
+//                        if let error = error {
+//                            print("Error adding notification request1: \(error)")
+//                        }
+//                    }
+//                    notificationCenter.add(request2) { (error) in
+//                        if let error = error {
+//                            print("Error adding notification request2: \(error)")
+//                        }
+//                    }
+//                    notificationCenter.add(request3) { (error) in
+//                        if let error = error {
+//                            print("Error adding notification request3: \(error)")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        
+//    }
     
-    
-    
-    // 아침메뉴 가져오기
-    func getBreakfastMenu(completion: @escaping (String?, Error?) -> Void) {
-        
-        // 현재 날짜 데이터 포맷
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd"
-        let current_date_string = formatter.string(from: Date())
-        
-        let docRef = db.collection("Menu").document(current_date_string)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let breakfastMenu = document.data()?["아침메뉴"] as? String {
-                    let breakfastMenu = breakfastMenu.replacingOccurrences(of: "\\n", with: "\n")
-                    
-                    completion(breakfastMenu, nil)
-                    
-                    
-                } else {
-                    completion(nil, nil)
-                }
-            } else {
-                completion(nil, error)
-            }
-        }
-    }
-    
-    // 점심메뉴 가져오기
-    func getLunchMenu(completion: @escaping (String?, Error?) -> Void) {
-        
-        
-        
-        // 현재 날짜 데이터 포맷
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd"
-        let current_date_string = formatter.string(from: Date())
-        
-        let docRef = db.collection("Menu").document(current_date_string)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let lunchMenu = document.data()?["점심메뉴"] as? String {
-                    let lunchMenu = lunchMenu.replacingOccurrences(of: "\\n", with: "\n")
-                    
-                    completion(lunchMenu, nil)
-                } else {
-                    completion(nil, nil)
-                }
-            } else {
-                completion(nil, error)
-            }
-        }
-    }
-    
-    // 저녁메뉴 가져오기
-    func getDinnerMenu(completion: @escaping (String?, Error?) -> Void) {
-        
-        
-        
-        // 현재 날짜 데이터 포맷
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd"
-        let current_date_string = formatter.string(from: Date())
-        
-        let docRef = db.collection("Menu").document(current_date_string)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let dinnerMenu = document.data()?["저녁메뉴"] as? String {
-                    let dinnerMenu = dinnerMenu.replacingOccurrences(of: "\\n", with: "\n")
-                    completion(dinnerMenu, nil)
-                } else {
-                    completion(nil, nil)
-                }
-            } else {
-                completion(nil, error)
-            }
-        }
-    }
     
     
     

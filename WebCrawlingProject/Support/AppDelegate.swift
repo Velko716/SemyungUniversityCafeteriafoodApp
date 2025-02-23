@@ -36,7 +36,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)    // 광고 추가
         
+        // 현재 날짜 데이터 포맷
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        let currentDateString = formatter.string(from: Date())
         
+        // 앱에 접속하면 현재 날짜 저장
+        UserDefaults.standard.set(currentDateString, forKey: "saveCurrentDate")
         
        
         
@@ -145,7 +151,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 로컬 알림
         UNUserNotificationCenter.current().delegate = self
         
-    
+        // 앱이 종료되기 직전에 scheduleAppRefresh()를 강제로 실행
+        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: .main) { _ in
+            SchedulingService.shared.scheduleAppRefresh()
+        }
+        
+        
+        // fetch 등록
+        application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
         // 백그라운드 작업 등록
         SchedulingService.shared.registerBackgroundTasks()
         

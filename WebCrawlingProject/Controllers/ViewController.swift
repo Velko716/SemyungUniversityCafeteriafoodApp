@@ -203,6 +203,21 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         configureItems()
         applyConstraints()
         
+        
+        /// 테스트용
+        Task {
+            do {
+                try await fetchMenu()
+            }
+            catch {
+                print("식단을 불러오지 못했습니다.123")
+            }
+        }
+        
+        
+        
+        
+        
     }
     
     
@@ -418,6 +433,56 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     // ⭐️에니메이션과 일반으로 나눈것은 처음 데이터를 불러오는 시간은 오래 걸리지만 캘린더를 선택해서 데이터를 불러오는건 에니메이션 시간이 아까움.
     
+    // MARK: - async 테스트용 메뉴 가져오기
+    private func fetchMenu() async throws {
+        
+        // currentCafeteria, currentDateStringSpace 비어있는 특수한 경우를 위한 처리 (경로 비어있음 방지)
+        if Data.currentCafeteria.isEmpty || Data.currentDateStringSpace.isEmpty {
+            Data.currentCafeteria = "Menu"
+            Data.currentDateStringSpace = "2025-02-26"
+        }
+        
+        let docRef = db.collection(Data.currentCafeteria).document(Data.currentDateStringSpace)
+        
+        
+        guard let document = try? await docRef.getDocument(), document.exists else {
+            print("문서가 존재하지 않거나, 불러오는데 실패함.")
+            
+            
+            // 알아서 MainActor로 들어가네?
+            self.data = [["아직 식단이 등록되지 않았습니다."],
+                         ["아직 식단이 등록되지 않았습니다."],
+                         ["아직 식단이 등록되지 않았습니다."]]
+            self.tableView.reloadData()
+            // FIXME: - 에러 모델 만들어서 제대로 된 에러 명시 해야함.
+            // TODO: 에러에 대한 View 추후 추가
+            throw URLError(.badServerResponse)
+        }
+        
+        // 옵셔널 체이닝으로 데이터 추출
+        let breakMenu = (document.data()?["아침메뉴"] as? String ?? "아직 식단이 등록되지 않았습니다.")
+            .replacingOccurrences(of: "\\n", with: "\n")
+        let lunchMenu = (document.data()?["점심메뉴"] as? String ?? "아직 식단이 등록되지 않았습니다.")
+            .replacingOccurrences(of: "\\n", with: "\n")
+        let dinnerMenu = (document.data()?["저녁메뉴"] as? String ?? "아직 식단이 등록되지 않았습니다.")
+            .replacingOccurrences(of: "\\n", with: "\n")
+        
+        
+        
+        print(breakMenu)
+        print(lunchMenu)
+        print(dinnerMenu)
+        
+        
+        // FIXME: - 이 메서드 사용 시 주석 해제
+//        self.data = [[breakMenu],
+//                     [lunchMenu],
+//                     [dinnerMenu]]
+//        
+//        self.tableView.reloadData()
+    }
+    
+    
     
     private func getFirebaseData(menu: String, date: String) {
         
@@ -455,6 +520,9 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
             }
         }
     }
+    
+    
+    
     
     private func getAnimationgetFirebaseData(menu: String, date: String) {
         
