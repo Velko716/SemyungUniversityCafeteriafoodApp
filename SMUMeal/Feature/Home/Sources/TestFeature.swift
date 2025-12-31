@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Components
-import Network
+import Repository
 
 public struct TestFeature: View {
     public init() {}
