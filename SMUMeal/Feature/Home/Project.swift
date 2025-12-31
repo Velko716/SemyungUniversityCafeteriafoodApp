@@ -5,6 +5,7 @@ let project = Project.make(
     name: "Home",
     moduleType: .feature,
     dependencies: [
-        .ui("Common")
+        .ui("Components"),
+        .core("Network")
     ]
 )

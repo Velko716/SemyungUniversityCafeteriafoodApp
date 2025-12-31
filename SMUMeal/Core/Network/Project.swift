@@ -5,6 +5,7 @@ let project = Project.make(
     name: "Network",
     moduleType: .core,
     dependencies: [
+        .core("Domain"),
         .external(name: "FirebaseFirestore"),
         .external(name: "FirebaseRemoteConfig"),
     ]

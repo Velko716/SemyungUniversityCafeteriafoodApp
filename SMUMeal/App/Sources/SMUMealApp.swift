@@ -1,10 +1,17 @@
 import SwiftUI
+import FirebaseCore
+import Home
 
 @main
 struct SMUMealApp: App {
+    
+    init() {
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TestFeature()
         }
     }
 }
