@@ -24,10 +24,9 @@ let project = Project(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             dependencies: [
-                // 필요한 모듈 의존성 추가
-                // .core("Domain"),
-                // .feature("Home"),
-                // .ui("DesignSystem"),
+                // Firebase
+                .external(name: "FirebaseAnalytics"),
+                .external(name: "FirebaseMessaging"),
             ]
         ),
         .target(

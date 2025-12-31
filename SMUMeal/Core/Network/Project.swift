@@ -4,5 +4,8 @@ import ProjectDescriptionHelpers
 let project = Project.make(
     name: "Network",
     moduleType: .core,
-    dependencies: []
+    dependencies: [
+        .external(name: "FirebaseFirestore"),
+        .external(name: "FirebaseRemoteConfig"),
+    ]
 )
