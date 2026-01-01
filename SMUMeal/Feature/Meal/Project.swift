@@ -2,10 +2,11 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.make(
-    name: "Home",
+    name: "Meal",
     moduleType: .feature,
     dependencies: [
         .ui("Components"),
         .core("Repository"),
+        .core("Utility")
     ]
 )

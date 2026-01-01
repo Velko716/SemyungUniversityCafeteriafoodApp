@@ -43,7 +43,7 @@ let project = Project(
             resources: ["Resources/**"],
             scripts: [swiftLintScript],
             dependencies: [
-                .feature("Home"),
+                .feature("Meal"),
                 // Firebase
                 .external(name: "FirebaseAnalytics"),
                 .external(name: "FirebaseMessaging"),
