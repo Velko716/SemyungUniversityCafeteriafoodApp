@@ -1,6 +1,8 @@
 import SwiftUI
 import FirebaseCore
-import Home
+import Meal
+import Repository
+import Network
 
 @main
 struct SMUMealApp: App {
@@ -8,16 +10,10 @@ struct SMUMealApp: App {
     init() {
         FirebaseApp.configure()
     }
-
+    
     var body: some Scene {
         WindowGroup {
-            TestFeature()
+            MealCarouselView(repository: MealRepository(firestore: FirestoreManager.shared))
         }
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        Text("Hello, World!")
     }
 }
