@@ -7,6 +7,7 @@ let project = Project.make(
     dependencies: [
         .ui("Components"),
         .core("Repository"),
-        .core("Utility")
+        .core("Network"),
+        .core("Utility"),
     ]
 )
