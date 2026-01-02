@@ -34,7 +34,7 @@ public struct MealCarouselView: View {
     public var body: some View {
         NavigationStack {
             CarouselView(
-                dateString: viewModel.choiceDate.fullDateString,
+                dateString: viewModel.choiceDate.displayString,
                 breakfastMenu: menu.breakfastMenu,
                 lunchMenu: menu.lunchMenu,
                 dinnerMenu: menu.dinnerMenu,
@@ -43,7 +43,11 @@ public struct MealCarouselView: View {
                 dinnerLikeCount: menu.dinnerLikeCount,
                 breakfastDislikeCount: menu.breakfastDislikeCount,
                 lunchDislikeCount: menu.lunchDislikeCount,
-                dinnerDislikeCount: menu.dinnerDislikeCount
+                dinnerDislikeCount: menu.dinnerDislikeCount,
+                selectedDate: Binding(
+                    get: { viewModel.choiceDate },
+                    set: { viewModel.choiceDate = $0 }
+                )
             )
             .task {
                 do {
@@ -52,29 +56,7 @@ public struct MealCarouselView: View {
                     print("error")
                 }
             }
-            .toolbar {
-//                MealCenterToolbar(
-//                    cafeteriaType: viewModel.toolBarType,
-//                    displayName: { $0.displayName }) {
-//                    switch viewModel.toolBarType {
-//                    case .studentCafeteria:
-//                        // FIXME: - 뷰 모델 로직으로 교체
-//                        viewModel.toolBarType = .studentCafeteria
-//                    case .selfServiceCafeteria:
-//                        // FIXME: - 뷰 모델 로직으로 교체
-//                        viewModel.toolBarType = .selfServiceCafeteria
-//                    case .yejiDormitoryCafeteria:
-//                        // FIXME: - 뷰 모델 로직으로 교체
-//                        viewModel.toolBarType = .yejiDormitoryCafeteria
-//                    }
-//                }
-                MealCenterToolbar(
-                    cafeteriaType: viewModel.toolBarType,
-                    displayName: { $0.displayName }
-                ) { selectedType in
-                    viewModel.toolBarType = selectedType
-                }
-            }
+            // MARK: - 식당 변경 시
             .onChange(of: viewModel.toolBarType) {
                 Task {
                     do {
@@ -84,10 +66,32 @@ public struct MealCarouselView: View {
                     }
                 }
             }
+            // MARK: - 날짜 변경 시
+            .onChange(of: viewModel.choiceDate) {
+                Task {
+                    do {
+                        self.menu = try await viewModel.loadMeal(targetDate: viewModel.choiceDate)
+                        print("menu: \(menu)")
+                    } catch {
+                        print("error")
+                    }
+                }
+            }
+            // MARK: - 툴 바
+            .toolbar {
+                MealCenterToolbar(
+                    cafeteriaType: viewModel.toolBarType,
+                    displayName: { $0.displayName }
+                ) { selectedType in
+                    viewModel.toolBarType = selectedType
+                }
+            }
         }
     }
 }
 
-//#Preview {
+// MARK: - Preview (외부 모듈 의존성 없이 UI만 테스트)
+//#Preview("MealCarouselView UI") {
 //    MealCarouselView(repository: MockMealRepository())
 //}
+

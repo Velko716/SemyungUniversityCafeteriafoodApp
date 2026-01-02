@@ -8,7 +8,6 @@
 import SwiftUI
 
 // MARK: - MealCardView (단일 카드)
-
 public struct MealCardView: View {
     public let dateString: String
     public let breakfastMenu: String
@@ -21,6 +20,8 @@ public struct MealCardView: View {
     public let lunchDislikeCount: Int
     public let dinnerDislikeCount: Int
     
+    @Binding private var isCalendarPresented: Bool
+
     public init(
         dateString: String,
         breakfastMenu: String,
@@ -31,7 +32,8 @@ public struct MealCardView: View {
         dinnerLikeCount: Int,
         breakfastDislikeCount: Int,
         lunchDislikeCount: Int,
-        dinnerDislikeCount: Int
+        dinnerDislikeCount: Int,
+        isCalendarPresented: Binding<Bool>
     ) {
         self.dateString = dateString
         self.breakfastMenu = breakfastMenu
@@ -43,11 +45,17 @@ public struct MealCardView: View {
         self.breakfastDislikeCount = breakfastDislikeCount
         self.lunchDislikeCount = lunchDislikeCount
         self.dinnerDislikeCount = dinnerDislikeCount
+        self._isCalendarPresented = isCalendarPresented
     }
     
     public var body: some View {
         VStack(spacing: 12) {
-            Text(dateString)
+            HStack {
+                Text(dateString)
+                CalendarButton {
+                    self.isCalendarPresented = true
+                }
+            }
             // 날짜 헤더
             HStack {
                 Text(breakfastMenu)
@@ -77,6 +85,9 @@ public struct CarouselView: View {
     public let lunchDislikeCount: Int
     public let dinnerDislikeCount: Int
     
+    @State private var isCalendarPresented: Bool = false
+    @Binding private var selectedDate: Date
+
     public init(
         dateString: String,
         breakfastMenu: String,
@@ -88,6 +99,7 @@ public struct CarouselView: View {
         breakfastDislikeCount: Int,
         lunchDislikeCount: Int,
         dinnerDislikeCount: Int,
+        selectedDate: Binding<Date>
     ) {
         self.dateString = dateString
         self.breakfastMenu = breakfastMenu
@@ -99,6 +111,7 @@ public struct CarouselView: View {
         self.breakfastDislikeCount = breakfastDislikeCount
         self.lunchDislikeCount = lunchDislikeCount
         self.dinnerDislikeCount = dinnerDislikeCount
+        self._selectedDate = selectedDate
     }
     
     public var body: some View {
@@ -112,13 +125,21 @@ public struct CarouselView: View {
             dinnerLikeCount: dinnerLikeCount,
             breakfastDislikeCount: breakfastDislikeCount,
             lunchDislikeCount: lunchDislikeCount,
-            dinnerDislikeCount: dinnerDislikeCount
+            dinnerDislikeCount: dinnerDislikeCount,
+            isCalendarPresented: $isCalendarPresented
         )
+        .popover(isPresented: $isCalendarPresented, arrowEdge: .bottom) {
+            DatePicker(
+                "",
+                selection: $selectedDate,
+                displayedComponents: .date
+            )
+            .datePickerStyle(.graphical)
+        }
     }
 }
 
 // MARK: - Preview
-
 #Preview {
     MealCardView(
         dateString: "1월 2일 (목)",
@@ -130,7 +151,8 @@ public struct CarouselView: View {
         dinnerLikeCount: 15,
         breakfastDislikeCount: 2,
         lunchDislikeCount: 5,
-        dinnerDislikeCount: 3
+        dinnerDislikeCount: 3,
+        isCalendarPresented: .constant(false)
     )
     .padding()
 }

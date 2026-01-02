@@ -8,22 +8,30 @@
 import SwiftUI
 
 internal struct CalendarButton: View {
+    let action: () -> Void
     
-    internal init() {}
-    
+    internal init(
+        action: @escaping () -> Void
+    ) {
+        self.action = action
+    }
+
     var body: some View {
         Button {
-            
+            action()
         } label: {
             Image(systemName: "calendar")
                 .foregroundStyle(Color.white)
+                .padding(10)
                 .background(
-                    Circle().fill(Color.pink)
+                    Circle()
+                        .fill(Color.pink)
                 )
         }
+        .buttonStyle(.plain)
     }
 }
 
 #Preview {
-    CalendarButton()
+    CalendarButton() {}
 }
