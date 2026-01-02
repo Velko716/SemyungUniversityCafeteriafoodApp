@@ -10,7 +10,7 @@ import Domain
 import Network
 
 public protocol MealRepositoryProtocol {
-    func fetchMeal(targetDate: String) async throws -> Menu
+    func fetchMeal(cafeteriaType: CafeteriaType, targetDate: String) async throws -> CafeteriaMenu
 }
 
 // Repository - 구현체
@@ -21,7 +21,14 @@ public struct MealRepository: MealRepositoryProtocol {
         self.firestore = firestore
     }
     
-    public func fetchMeal(targetDate: String) async throws -> Menu {
-        try await firestore.get(targetDate, from: .studentCafeteria)
+    public func fetchMeal(cafeteriaType: CafeteriaType, targetDate: String) async throws -> CafeteriaMenu {
+        switch cafeteriaType {
+        case .studentCafeteria:
+            return try await firestore.get(targetDate, from: .studentCafeteria)
+        case .selfServiceCafeteria:
+            return try await firestore.get(targetDate, from: .selfServiceCafeteria)
+        case .yejiDormitoryCafeteria:
+            return try await firestore.get(targetDate, from: .yejiDormitoryCafeteria)
+        }
     }
 }

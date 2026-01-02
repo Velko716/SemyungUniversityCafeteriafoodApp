@@ -45,7 +45,7 @@ public class FirestoreManager {
         documentId: String,
         asDictionary: [String: Any]
     ) async throws {
-        var asDictionary = asDictionary
+        let asDictionary = asDictionary
         
         try await db
             .collection(collection.rawValue)
