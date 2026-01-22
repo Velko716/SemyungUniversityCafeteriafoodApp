@@ -19,12 +19,24 @@ let project = Project(
                         "UIColorName": "",
                         "UIImageName": "",
                     ],
+                    "UIAppFonts": [
+                        "Pretendard-Black.ttf",
+                        "Pretendard-Bold.ttf",
+                        "Pretendard-ExtraBold.ttf",
+                        "Pretendard-ExtraLight.ttf",
+                        "Pretendard-Light.ttf",
+                        "Pretendard-Medium.ttf",
+                        "Pretendard-Regular.ttf",
+                        "Pretendard-SemiBold.ttf",
+                        "Pretendard-Thin.ttf",
+                    ],
                 ]
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             dependencies: [
                 .feature("Meal"),
+                .ui("DesignSystem"),
                 // Firebase
                 .external(name: "FirebaseAnalytics"),
                 .external(name: "FirebaseMessaging"),

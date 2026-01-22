@@ -4,8 +4,16 @@ public extension Project {
     static func make(
         name: String,
         moduleType: ModuleType,
+        resources: ResourceFileElements? = nil,
         dependencies: [TargetDependency] = []
     ) -> Project {
+        let targetResources: ResourceFileElements? = {
+            if let resources = resources {
+                return resources
+            }
+            return moduleType == .app ? ["Resources/**"] : nil
+        }()
+
         let target = Target.target(
             name: name,
             destinations: .iOS,
@@ -14,7 +22,7 @@ public extension Project {
             deploymentTargets: .iOS("17.0"),
             infoPlist: .default,
             sources: ["Sources/**"],
-            resources: moduleType == .app ? ["Resources/**"] : nil,
+            resources: targetResources,
             dependencies: dependencies
         )
 

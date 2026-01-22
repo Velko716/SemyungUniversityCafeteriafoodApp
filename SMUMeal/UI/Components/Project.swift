@@ -4,5 +4,7 @@ import ProjectDescriptionHelpers
 let project = Project.make(
     name: "Components",
     moduleType: .ui,
-    dependencies: []
+    dependencies: [
+        .ui("DesignSystem")
+    ]
 )

@@ -10,6 +10,7 @@ import Repository
 import Components
 import Network
 import Utility
+import Settings
 
 public struct MealCarouselView: View {
     @State private var viewModel: MealCarouselViewModel
@@ -33,22 +34,29 @@ public struct MealCarouselView: View {
     
     public var body: some View {
         NavigationStack {
-            CarouselView(
-                dateString: viewModel.choiceDate.displayString,
-                breakfastMenu: menu.breakfastMenu,
-                lunchMenu: menu.lunchMenu,
-                dinnerMenu: menu.dinnerMenu,
-                breakfastLikeCount: menu.breakfastLikeCount,
-                lunchLikeCount: menu.lunchLikeCount,
-                dinnerLikeCount: menu.dinnerLikeCount,
-                breakfastDislikeCount: menu.breakfastDislikeCount,
-                lunchDislikeCount: menu.lunchDislikeCount,
-                dinnerDislikeCount: menu.dinnerDislikeCount,
-                selectedDate: Binding(
-                    get: { viewModel.choiceDate },
-                    set: { viewModel.choiceDate = $0 }
-                )
-            )
+            ZStack {
+                Color.blue.ignoresSafeArea()
+                
+                VStack {
+                    MealCardView(
+                        dateString: viewModel.choiceDate.displayString,
+                        breakfastMenu: menu.breakfastMenu,
+                        lunchMenu: menu.lunchMenu,
+                        dinnerMenu: menu.dinnerMenu,
+                        breakfastLikeCount: menu.breakfastLikeCount,
+                        lunchLikeCount: menu.lunchLikeCount,
+                        dinnerLikeCount: menu.dinnerLikeCount,
+                        breakfastDislikeCount: menu.breakfastDislikeCount,
+                        lunchDislikeCount: menu.lunchDislikeCount,
+                        dinnerDislikeCount: menu.dinnerDislikeCount,
+                        selectedDate: Binding(
+                            get: { viewModel.choiceDate },
+                            set: { viewModel.choiceDate = $0 }
+                        )
+                    )
+                }
+                .padding([.horizontal, .bottom], 16)
+            }
             .task {
                 do {
                     self.menu = try await viewModel.loadMeal(targetDate: viewModel.choiceDate)
@@ -84,6 +92,9 @@ public struct MealCarouselView: View {
                     displayName: { $0.displayName }
                 ) { selectedType in
                     viewModel.toolBarType = selectedType
+                }
+                MealTrailingToolbar {
+                    SettingView()
                 }
             }
         }
