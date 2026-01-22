@@ -8,9 +8,9 @@
 import Foundation
 
 public struct CafeteriaMenu: Codable {
-    public let breakfastMenu: String
-    public let lunchMenu: String
-    public let dinnerMenu: String
+    public var breakfastMenu: String
+    public var lunchMenu: String
+    public var dinnerMenu: String
 
     public let breakfastLikeCount: Int
     public let lunchLikeCount: Int
