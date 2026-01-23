@@ -163,22 +163,25 @@ public struct MealCardView: View {
 // MARK: - Preview
 #Preview {
     NavigationStack {
-        MealCardView(
-            dateString: "1월 2일 (목)",
-            breakfastMenu: "토스트\n우유\n사과\n토스트\n우유\n사과\n사과",
-            lunchMenu: "김치찌개\n밥\n계란말이",
-            dinnerMenu: "돈까스\n샐러드\n미소국",
-            breakfastLikeCount: 10,
-            lunchLikeCount: 25,
-            dinnerLikeCount: 15,
-            breakfastDislikeCount: 2,
-            lunchDislikeCount: 5,
-            dinnerDislikeCount: 3,
-            selectedDate: .constant(Date())
-        )
-        .padding(16)
-        .navigationTitle("학생회관_학생식당")
-        .navigationBarTitleDisplayMode(.inline)
+        ZStack {
+            Color.navy01.ignoresSafeArea()
+            MealCardView(
+                dateString: "1월 2일 (목)",
+                breakfastMenu: "토스트\n우유\n사과\n토스트\n우유\n사과\n사과",
+                lunchMenu: "김치찌개\n밥\n계란말이",
+                dinnerMenu: "돈까스\n샐러드\n미소국",
+                breakfastLikeCount: 10,
+                lunchLikeCount: 25,
+                dinnerLikeCount: 15,
+                breakfastDislikeCount: 2,
+                lunchDislikeCount: 5,
+                dinnerDislikeCount: 3,
+                selectedDate: .constant(Date())
+            )
+            .padding(16)
+            .navigationTitle("학생회관_학생식당")
+            .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
