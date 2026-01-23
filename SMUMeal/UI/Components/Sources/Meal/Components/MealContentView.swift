@@ -28,28 +28,33 @@ internal struct MealContentView: View {
                 .foregroundStyle(Color.gray01)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            HStack {
-                CountButton(
-                    countButtonType: .like,
-                    count: likeCount,
-                    iconSize: buttonIconSize,
-                    fontSize: buttonFontSize,
-                    verticalPadding: buttonVerticalPadding,
-                    horizontalPadding: buttonHorizontalPadding,
-                    cornerRadius: 16) {
-                        // TODO: 액션 추가
-                    }
-                
-                CountButton(
-                    countButtonType: .disLike,
-                    count: disLikeCount,
-                    iconSize: buttonIconSize,
-                    fontSize: buttonFontSize,
-                    verticalPadding: buttonVerticalPadding,
-                    horizontalPadding: buttonHorizontalPadding,
-                    cornerRadius: 16) {
-                        // TODO: 액션 추가
-                    }
+            // MARK: - 식단 등록되지 않았을 때, 버튼 숨기기
+            if menu == "아직 식단이 등록되지 않았습니다." {
+                EmptyView()
+            } else {
+                HStack {
+                    CountButton(
+                        countButtonType: .like,
+                        count: likeCount,
+                        iconSize: buttonIconSize,
+                        fontSize: buttonFontSize,
+                        verticalPadding: buttonVerticalPadding,
+                        horizontalPadding: buttonHorizontalPadding,
+                        cornerRadius: 16) {
+                            // TODO: 액션 추가
+                        }
+                    
+                    CountButton(
+                        countButtonType: .disLike,
+                        count: disLikeCount,
+                        iconSize: buttonIconSize,
+                        fontSize: buttonFontSize,
+                        verticalPadding: buttonVerticalPadding,
+                        horizontalPadding: buttonHorizontalPadding,
+                        cornerRadius: 16) {
+                            // TODO: 액션 추가
+                        }
+                }
             }
         }
         .frame(height: cardHeight)
