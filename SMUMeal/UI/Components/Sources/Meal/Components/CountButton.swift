@@ -50,17 +50,17 @@ public struct CountButton: View {
         self.cornerRadius = cornerRadius
         self.action = action
     }
-
+    
     public var body: some View {
         HStack {
             Button(action: action) {
                 HStack(spacing: iconSize * 0.5) {
                     Image(systemName: countButtonType.countButtonImage)
                         .font(.pretendard(size: iconSize, weight: .medium))
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(Color.black01)
                     Text("\(count)")
                         .font(.pretendard(size: fontSize, weight: .medium))
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(Color.black01)
                 }
                 .padding(.vertical, verticalPadding)
                 .padding(.horizontal, horizontalPadding)

@@ -29,13 +29,13 @@ internal struct DateHeaderView: View {
             HStack {
                 Text(dateString)
                     .font(.pretendard(size: dateStringFontSize, weight: .bold))
-                    .foregroundStyle(Color.black)
+                    .foregroundStyle(Color.gray01)
                 
                 Spacer().frame(width: 4)
                 
                 Image(systemName: "calendar")
                     .font(.pretendard(size: dateStringFontSize, weight: .bold))
-                    .foregroundStyle(Color.black)
+                    .foregroundStyle(Color.gray01)
             }
         }
     }

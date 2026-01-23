@@ -34,13 +34,13 @@ public struct MealCenterToolbar<T: RawRepresentable & CaseIterable>: ToolbarCont
                 HStack {
                     Text(displayName(cafeteriaType))
                         .font(.pretendard(size: 18, weight: .medium))
-                        .foregroundStyle(Color.black) // FIXME: - 컬러 수정
+                        .foregroundStyle(Color.white01)
                     
                     Spacer().frame(width: 2)
                     
                     Image(systemName: "arrowtriangle.down.fill")
                         .font(.pretendard(size: 14, weight: .medium))
-                        .foregroundStyle(Color.black01) // FIXME: - 컬러 수정
+                        .foregroundStyle(Color.white01)
                 }
             }
         }

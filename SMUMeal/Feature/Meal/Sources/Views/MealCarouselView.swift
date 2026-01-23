@@ -35,7 +35,7 @@ public struct MealCarouselView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
-                Color.blue.ignoresSafeArea()
+                Color.navy01.ignoresSafeArea()
                 
                 VStack {
                     MealCardView(

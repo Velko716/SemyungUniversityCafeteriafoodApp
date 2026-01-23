@@ -25,7 +25,7 @@ internal struct MealContentView: View {
         HStack {
             Text(menu)
                 .font(.pretendard(size: menuFontSize, weight: .medium))
-                .foregroundStyle(Color.black)
+                .foregroundStyle(Color.gray01)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             HStack {
@@ -57,7 +57,7 @@ internal struct MealContentView: View {
         .padding(.horizontal, 8)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.gray) // FIXME: - 컬러 수정
+                .fill(Color.gray02)
         )
     }
 }

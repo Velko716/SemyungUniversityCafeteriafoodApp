@@ -17,19 +17,19 @@ internal struct MealTitleView: View {
         HStack {
             Text(titleTypeText)
                 .font(.pretendard(size: titleFontSize, weight: .bold))
-                .foregroundStyle(Color.black)
+                .foregroundStyle(Color.gray01)
                                 
             Spacer().frame(width: 8)
             
             Image(systemName: "stopwatch")
                 .font(.pretendard(size: menuFontSize, weight: .bold))
-                .foregroundStyle(Color.gray)
+                .foregroundStyle(Color.gray01)
             
             Spacer().frame(width: 4)
             
             Text(timeText)
                 .font(.pretendard(size: menuFontSize, weight: .bold))
-                .foregroundStyle(Color.gray)
+                .foregroundStyle(Color.gray01)
             
             Spacer()
         }

@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 public struct MealTrailingToolbar<Destination: View>: ToolbarContent {
     private let destination: () -> Destination
     private let iconColor: Color
 
     public init(
-        iconColor: Color = .black,
+        iconColor: Color = Color.gray01,
         @ViewBuilder destination: @escaping () -> Destination
     ) {
         self.iconColor = iconColor
