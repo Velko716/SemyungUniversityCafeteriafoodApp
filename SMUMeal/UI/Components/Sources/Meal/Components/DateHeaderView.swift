@@ -8,7 +8,7 @@
 import SwiftUI
 
 internal struct DateHeaderView: View {
-    @State var dateString: String
+    let dateString: String
     let dateStringFontSize: CGFloat
     let action: () -> Void
     
