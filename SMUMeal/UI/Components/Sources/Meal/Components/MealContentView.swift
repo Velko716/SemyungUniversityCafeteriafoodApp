@@ -21,6 +21,9 @@ internal struct MealContentView: View {
     let cardHeight: CGFloat
     let verticalPadding: CGFloat
     
+    let mealType: MealType
+    let onAction: (MealType, MealActionType) -> Void
+    
     var body: some View {
         HStack {
             Text(menu)
@@ -41,7 +44,7 @@ internal struct MealContentView: View {
                         verticalPadding: buttonVerticalPadding,
                         horizontalPadding: buttonHorizontalPadding,
                         cornerRadius: 16) {
-                            // TODO: 액션 추가
+                            onAction(mealType, .like)
                         }
                     
                     CountButton(
@@ -52,7 +55,7 @@ internal struct MealContentView: View {
                         verticalPadding: buttonVerticalPadding,
                         horizontalPadding: buttonHorizontalPadding,
                         cornerRadius: 16) {
-                            // TODO: 액션 추가
+                            onAction(mealType, .dislike)
                         }
                 }
             }
@@ -78,6 +81,8 @@ internal struct MealContentView: View {
         buttonVerticalPadding: 10,
         buttonHorizontalPadding: 10,
         cardHeight: 10,
-        verticalPadding: 10
+        verticalPadding: 10,
+        mealType: .breakfast,
+        onAction: { _, _ in }
     )
 }

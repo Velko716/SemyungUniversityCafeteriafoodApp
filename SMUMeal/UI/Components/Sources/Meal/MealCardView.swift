@@ -8,6 +8,17 @@
 import SwiftUI
 import DesignSystem
 
+// MARK: - Enum 정의
+public enum MealType {
+    case breakfast
+    case lunch
+    case dinner
+}
+
+public enum MealActionType {
+    case like
+    case dislike
+}
 
 // MARK: - MealCardView (단일 카드)
 public struct MealCardView: View {
@@ -25,6 +36,8 @@ public struct MealCardView: View {
     @State private var isCalendarPresented: Bool = false
     @Binding private var selectedDate: Date
 
+    private let onAction: (MealType, MealActionType) -> Void
+
     public init(
         dateString: String,
         breakfastMenu: String,
@@ -36,7 +49,8 @@ public struct MealCardView: View {
         breakfastDislikeCount: Int,
         lunchDislikeCount: Int,
         dinnerDislikeCount: Int,
-        selectedDate: Binding<Date>
+        selectedDate: Binding<Date>,
+        onAction: @escaping (MealType, MealActionType) -> Void
     ) {
         self.dateString = dateString
         self.breakfastMenu = breakfastMenu
@@ -49,6 +63,7 @@ public struct MealCardView: View {
         self.lunchDislikeCount = lunchDislikeCount
         self.dinnerDislikeCount = dinnerDislikeCount
         self._selectedDate = selectedDate
+        self.onAction = onAction
     }
 
     public var body: some View {
@@ -95,7 +110,9 @@ public struct MealCardView: View {
                     buttonVerticalPadding: buttonVerticalPadding,
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
-                    verticalPadding: verticalPadding
+                    verticalPadding: verticalPadding,
+                    mealType: .breakfast,
+                    onAction: onAction
                 )
                 
                 Spacer()
@@ -120,7 +137,9 @@ public struct MealCardView: View {
                     buttonVerticalPadding: buttonVerticalPadding,
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
-                    verticalPadding: verticalPadding
+                    verticalPadding: verticalPadding,
+                    mealType: .lunch,
+                    onAction: onAction
                 )
                 
                 Spacer()
@@ -145,17 +164,30 @@ public struct MealCardView: View {
                     buttonVerticalPadding: buttonVerticalPadding,
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
-                    verticalPadding: verticalPadding
+                    verticalPadding: verticalPadding,
+                    mealType: .dinner,
+                    onAction: onAction
                 )
             }
-            .popover(isPresented: $isCalendarPresented, arrowEdge: .bottom) {
-                DatePicker(
-                    "",
-                    selection: $selectedDate,
-                    displayedComponents: .date
-                )
-                .datePickerStyle(.graphical)
-            }
+//            .popover(isPresented: $isCalendarPresented, arrowEdge: .bottom) {
+//                DatePicker(
+//                    "",
+//                    selection: $selectedDate,
+//                    displayedComponents: .date
+//                )
+//                .datePickerStyle(.graphical)
+//            }
+            // TODO: 커스텀 캘린더 구현하기
+//            .popover(
+//                isPresented: $isCalendarPresented,
+//                arrowEdge: .top
+//            ) {
+//                ZStack {
+//                    Color.red
+//                    Text("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅋㅋ")
+//                        .presentationCompactAdaptation(.popover)
+//                }
+//            }
         }
     }
 }
@@ -176,7 +208,10 @@ public struct MealCardView: View {
                 breakfastDislikeCount: 2,
                 lunchDislikeCount: 5,
                 dinnerDislikeCount: 3,
-                selectedDate: .constant(Date())
+                selectedDate: .constant(Date()),
+                onAction: { mealType, actionType in
+                    print("\(mealType) - \(actionType)")
+                }
             )
             .padding(16)
             .navigationTitle("학생회관_학생식당")

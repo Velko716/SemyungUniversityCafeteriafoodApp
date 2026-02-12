@@ -93,4 +93,45 @@ public class FirestoreManager {
         let snap = try await query.getDocuments()
         return snap.documents.compactMap { try? $0.data(as: T.self) }
     }
+
+    /// 실시간으로 문서 변경을 구독합니다.
+    /// - Parameters:
+    ///   - id: documentID
+    ///   - type: 컬렉션 타입
+    /// - Returns: 데이터 변경 시 방출하는 AsyncThrowingStream
+    public func observe<T: Decodable>(
+        _ id: String,
+        from type: CollectionType
+    ) -> AsyncThrowingStream<T, Error> {
+        AsyncThrowingStream { continuation in
+            let listener = db.collection(type.rawValue).document(id)
+                .addSnapshotListener { snapshot, error in
+                    if let error {
+                        continuation.finish(throwing: FirestoreError.fetchFailed(underlying: error))
+                        return
+                    }
+
+                    guard let snapshot, snapshot.exists else {
+                        continuation.finish(throwing: FirestoreError.fetchFailed(
+                            underlying: NSError(
+                                domain: "", code: -1,
+                                userInfo: [NSLocalizedDescriptionKey: "문서가 존재하지 않습니다."]
+                            )
+                        ))
+                        return
+                    }
+
+                    do {
+                        let data = try snapshot.data(as: T.self)
+                        continuation.yield(data)
+                    } catch {
+                        continuation.finish(throwing: FirestoreError.decodingFailed)
+                    }
+                }
+
+            continuation.onTermination = { _ in
+                listener.remove()
+            }
+        }
+    }
 }
