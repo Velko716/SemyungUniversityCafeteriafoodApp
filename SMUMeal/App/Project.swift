@@ -37,9 +37,6 @@ let project = Project(
             dependencies: [
                 .feature("Meal"),
                 .ui("DesignSystem"),
-                // Firebase
-                .external(name: "FirebaseAnalytics"),
-                .external(name: "FirebaseMessaging"),
             ]
         ),
         .target(
