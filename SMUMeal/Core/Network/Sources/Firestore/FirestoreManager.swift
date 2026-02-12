@@ -5,133 +5,188 @@
 //  Created by 김진혁 on 12/31/25.
 //
 
-import FirebaseFirestore
+import Foundation
 import Domain
+import Common
 
-public class FirestoreManager {
-    public static let shared = FirestoreManager()
-    private let db = Firestore.firestore()
-    
-    private init() {}
-    
-    @discardableResult
-    public func save<T: EntityRepresentable>(_ data: T) async throws -> T {
-        guard let dict = data.asDictionary else { throw FirestoreError.encodingFailed }
-        let ref = db
-            .collection(data.entityName.rawValue)
-            .document(data.documentID)
 
-        try await ref.setData(dict)
-        return data
-    }
+struct FirestoreCafeteriaMenuDTO: Decodable {
+    let name: String
+    let fields: Fields
     
-    @discardableResult
-    public func create<T: EntityRepresentable>(_ data: T) async throws -> T {
-        try await save(data)
-    }
-    
-    @discardableResult
-    public func update<T: EntityRepresentable>(_ data: T) async throws -> T {
-        try await save(data)
-    }
-    
-    /// 특정 필드만 부분 업데이트를 진행하는 메서드입니다.
-    /// - Parameters:
-    ///     - collection: 컬렉션 타입
-    ///     - documentId: 변경하고자 하는 documentId
-    ///     - asDictionary: 변경하려는 딕셔너리 데이터
-    public func updateFields(
-        collection: CollectionType,
-        documentId: String,
-        asDictionary: [String: Any]
-    ) async throws {
-        let asDictionary = asDictionary
+    struct Fields: Decodable {
+        let breakfastMenu: StringField
+        let lunchMenu: StringField
+        let dinnerMenu: StringField
         
-        try await db
-            .collection(collection.rawValue)
-            .document(documentId)
-            .updateData(asDictionary)
-    }
-    
-    /// 컬렉션의 데이터를 가져옵니다.
-    /// - id: documentID
-    /// - type: 컬렉션 타입
-    public func get<T: Decodable>(
-        _ id: String,
-        from type: CollectionType
-    ) async throws -> T {
-        let snapshot = try await db.collection(type.rawValue).document(id).getDocument()
-        guard let data = try? snapshot.data(as: T.self) else {
-            throw FirestoreError.fetchFailed(
-                underlying: NSError(
-                    domain: "", code: -1,
-                    userInfo: [NSLocalizedDescriptionKey: "문서가 존재하지 않습니다."]
-                )
-            )
+        let breakfastLikeCount: IntField
+        let lunchLikeCount: IntField
+        let dinnerLikeCount: IntField
+        
+        let breakfastDislikeCount: IntField
+        let lunchDislikeCount: IntField
+        let dinnerDislikeCount: IntField
+        
+        enum CodingKeys: String, CodingKey {
+            case breakfastMenu = "breakfast_menu"
+            case lunchMenu = "lunch_menu"
+            case dinnerMenu = "dinner_menu"
+            
+            case breakfastLikeCount = "breakfast_like_count"
+            case lunchLikeCount = "lunch_like_count"
+            case dinnerLikeCount = "dinner_like_count"
+            
+            case breakfastDislikeCount = "breakfast_dislike_count"
+            case lunchDislikeCount = "lunch_dislike_count"
+            case dinnerDislikeCount = "dinner_dislike_count"
         }
-        return data
     }
     
-    /// 컬렉션의 모든 데이터를 가져옵니다.
-    /// 파이어베이스 색인으로 정렬합니다.
-    /// - Parameters:
-    /// - id: userID
-    /// - type: 컬렉션 타입
-    /// - key: 컬렉션 안의 문서의 대한 조건절
-    /// - orderKey: 어느 기준으로 정렬
-    /// - descending: 정렬 방향
-    @discardableResult
-    public func fetchAll<T: Decodable>(
-        _ id: String,
-        from type: CollectionType,
-        where key: String,
-        orderBy orderKey: String? = nil,
-        descending: Bool = true
-    ) async throws -> [T] {
-        var query: Query = db.collection(type.rawValue).whereField(key, isEqualTo: id)
-        if let orderKey { query = query.order(by: orderKey, descending: descending) }
-        let snap = try await query.getDocuments()
-        return snap.documents.compactMap { try? $0.data(as: T.self) }
+    struct StringField: Decodable {
+        let stringValue: String
     }
+    
+    struct IntField: Decodable {
+        let integerValue: String
+    }
+}
 
-    /// 실시간으로 문서 변경을 구독합니다.
-    /// - Parameters:
-    ///   - id: documentID
-    ///   - type: 컬렉션 타입
-    /// - Returns: 데이터 변경 시 방출하는 AsyncThrowingStream
-    public func observe<T: Decodable>(
-        _ id: String,
-        from type: CollectionType
-    ) -> AsyncThrowingStream<T, Error> {
-        AsyncThrowingStream { continuation in
-            let listener = db.collection(type.rawValue).document(id)
-                .addSnapshotListener { snapshot, error in
-                    if let error {
-                        continuation.finish(throwing: FirestoreError.fetchFailed(underlying: error))
-                        return
-                    }
 
-                    guard let snapshot, snapshot.exists else {
-                        continuation.finish(throwing: FirestoreError.fetchFailed(
-                            underlying: NSError(
-                                domain: "", code: -1,
-                                userInfo: [NSLocalizedDescriptionKey: "문서가 존재하지 않습니다."]
-                            )
-                        ))
-                        return
-                    }
+extension FirestoreCafeteriaMenuDTO {
+    
+    func toDomain() -> CafeteriaMenu {
+        CafeteriaMenu(
+            breakfastMenu: fields.breakfastMenu.stringValue,
+            lunchMenu: fields.lunchMenu.stringValue,
+            dinnerMenu: fields.dinnerMenu.stringValue,
+            
+            breakfastLikeCount: Int(fields.breakfastLikeCount.integerValue) ?? 0,
+            lunchLikeCount: Int(fields.lunchLikeCount.integerValue) ?? 0,
+            dinnerLikeCount: Int(fields.dinnerLikeCount.integerValue) ?? 0,
+            
+            breakfastDislikeCount: Int(fields.breakfastDislikeCount.integerValue) ?? 0,
+            lunchDislikeCount: Int(fields.lunchDislikeCount.integerValue) ?? 0,
+            dinnerDislikeCount: Int(fields.dinnerDislikeCount.integerValue) ?? 0
+        )
+    }
+}
 
-                    do {
-                        let data = try snapshot.data(as: T.self)
-                        continuation.yield(data)
-                    } catch {
-                        continuation.finish(throwing: FirestoreError.decodingFailed)
-                    }
-                }
+public struct FirestoreService {
+    
+    private let projectId = "webcrawlingproject-6a4d1"
+    private let apiKey = "AIzaSyB5IXnCVbE0Zec3w_U0b9gi5uZDoXDx-8w"
+    
+    public init() {}
+    
+    public func fetchMenu(documentId: String) async throws -> CafeteriaMenu {
+        
+        let urlString = """
+        https://firestore.googleapis.com/v1/projects/\(projectId)/databases/(default)/documents/student_cafeteria/\(documentId)
+        """
+        // ?key=\(apiKey)
+        
+        guard let url = URL(string: urlString) else {
+            throw URLError(.badURL)
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            print("Status Code:", httpResponse.statusCode)
+        }
 
-            continuation.onTermination = { _ in
-                listener.remove()
+        print(String(data: data, encoding: .utf8) ?? "")
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let dto = try JSONDecoder().decode(FirestoreCafeteriaMenuDTO.self, from: data)
+        
+        return dto.toDomain()
+    }
+}
+
+
+
+
+
+
+public struct AnonymousAuthResponse: Decodable {
+    let idToken: String
+    let refreshToken: String
+    let localId: String
+    let expiresIn: String
+}
+
+public struct TestAuth {
+    public init() {}
+    
+    public func signInAnonymously() async throws -> AnonymousAuthResponse {
+        
+        let url = URL(string:
+                        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB5IXnCVbE0Zec3w_U0b9gi5uZDoXDx-8w"
+        )!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        request.httpBody = """
+    {
+      "returnSecureToken": true
+    }
+    """.data(using: .utf8)
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+        return try JSONDecoder().decode(AnonymousAuthResponse.self, from: data)
+    }
+}
+
+
+// MARK: - API
+
+// MARK: - API Response
+public struct MenuResponse: Codable {
+    let success: Bool
+    let data: CafeteriaMenu?
+    let message: String?
+}
+
+// MARK: - API Service
+public class CafeteriaAPI {
+    static let shared = CafeteriaAPI()
+    private let baseURL = "https://us-central1-webcrawlingproject-6a4d1.cloudfunctions.net/api"
+    
+    public init() {}
+    
+    /// 특정 날짜의 메뉴를 가져옵니다
+    /// - Parameter date: 날짜 문자열 (예: "2025.02.12")
+    public func fetchMenu(for date: String) async throws -> CafeteriaMenu {
+        guard let url = URL(string: "\(baseURL)/menus/\(date)") else {
+            throw CafeteriaAPIError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw CafeteriaAPIError.invalidResponse
+        }
+        
+        let decoded = try JSONDecoder().decode(MenuResponse.self, from: data)
+        
+        switch httpResponse.statusCode {
+        case 200:
+            guard let menu = decoded.data else {
+                throw CafeteriaAPIError.noData
             }
+            return menu
+        case 404:
+            throw CafeteriaAPIError.menuNotFound
+        default:
+            throw CafeteriaAPIError.serverError(decoded.message ?? "Unknown error")
         }
     }
 }
