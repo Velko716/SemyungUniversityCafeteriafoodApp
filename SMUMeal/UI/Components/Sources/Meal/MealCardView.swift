@@ -8,18 +8,6 @@
 import SwiftUI
 import DesignSystem
 
-// MARK: - Enum 정의
-public enum MealType {
-    case breakfast
-    case lunch
-    case dinner
-}
-
-public enum MealActionType {
-    case like
-    case dislike
-}
-
 // MARK: - MealCardView (단일 카드)
 public struct MealCardView: View {
     public let dateString: String
@@ -36,7 +24,12 @@ public struct MealCardView: View {
     @State private var isCalendarPresented: Bool = false
     @Binding private var selectedDate: Date
 
-    private let onAction: (MealType, MealActionType) -> Void
+    private let onBreakfastLike: () -> Void
+    private let onBreakfastDislike: () -> Void
+    private let onLunchLike: () -> Void
+    private let onLunchDislike: () -> Void
+    private let onDinnerLike: () -> Void
+    private let onDinnerDislike: () -> Void
 
     public init(
         dateString: String,
@@ -50,7 +43,12 @@ public struct MealCardView: View {
         lunchDislikeCount: Int,
         dinnerDislikeCount: Int,
         selectedDate: Binding<Date>,
-        onAction: @escaping (MealType, MealActionType) -> Void
+        onBreakfastLike: @escaping () -> Void,
+        onBreakfastDislike: @escaping () -> Void,
+        onLunchLike: @escaping () -> Void,
+        onLunchDislike: @escaping () -> Void,
+        onDinnerLike: @escaping () -> Void,
+        onDinnerDislike: @escaping () -> Void
     ) {
         self.dateString = dateString
         self.breakfastMenu = breakfastMenu
@@ -63,7 +61,12 @@ public struct MealCardView: View {
         self.lunchDislikeCount = lunchDislikeCount
         self.dinnerDislikeCount = dinnerDislikeCount
         self._selectedDate = selectedDate
-        self.onAction = onAction
+        self.onBreakfastLike = onBreakfastLike
+        self.onBreakfastDislike = onBreakfastDislike
+        self.onLunchLike = onLunchLike
+        self.onLunchDislike = onLunchDislike
+        self.onDinnerLike = onDinnerLike
+        self.onDinnerDislike = onDinnerDislike
     }
 
     public var body: some View {
@@ -89,7 +92,7 @@ public struct MealCardView: View {
                     self.isCalendarPresented = true
                 }
                 Spacer()
-                
+
                 // MARK: - 아침
                 MealTitleView(
                     titleTypeText: "아침",
@@ -97,9 +100,9 @@ public struct MealCardView: View {
                     titleFontSize: titleFontSize,
                     menuFontSize: menuFontSize
                 )
-                
+
                 Spacer().frame(height: 8)
-                
+
                 MealContentView(
                     menu: breakfastMenu,
                     likeCount: breakfastLikeCount,
@@ -111,12 +114,12 @@ public struct MealCardView: View {
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
                     verticalPadding: verticalPadding,
-                    mealType: .breakfast,
-                    onAction: onAction
+                    onLike: onBreakfastLike,
+                    onDislike: onBreakfastDislike
                 )
-                
+
                 Spacer()
-                
+
                 // MARK: - 점심
                 MealTitleView(
                     titleTypeText: "점심",
@@ -124,9 +127,9 @@ public struct MealCardView: View {
                     titleFontSize: titleFontSize,
                     menuFontSize: menuFontSize
                 )
-                
+
                 Spacer().frame(height: 8)
-                
+
                 MealContentView(
                     menu: lunchMenu,
                     likeCount: lunchLikeCount,
@@ -138,10 +141,10 @@ public struct MealCardView: View {
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
                     verticalPadding: verticalPadding,
-                    mealType: .lunch,
-                    onAction: onAction
+                    onLike: onLunchLike,
+                    onDislike: onLunchDislike
                 )
-                
+
                 Spacer()
 
                 // MARK: - 저녁
@@ -153,7 +156,7 @@ public struct MealCardView: View {
                 )
 
                 Spacer().frame(height: 8)
-                
+
                 MealContentView(
                     menu: dinnerMenu,
                     likeCount: dinnerLikeCount,
@@ -165,29 +168,10 @@ public struct MealCardView: View {
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
                     verticalPadding: verticalPadding,
-                    mealType: .dinner,
-                    onAction: onAction
+                    onLike: onDinnerLike,
+                    onDislike: onDinnerDislike
                 )
             }
-//            .popover(isPresented: $isCalendarPresented, arrowEdge: .bottom) {
-//                DatePicker(
-//                    "",
-//                    selection: $selectedDate,
-//                    displayedComponents: .date
-//                )
-//                .datePickerStyle(.graphical)
-//            }
-            // TODO: 커스텀 캘린더 구현하기
-//            .popover(
-//                isPresented: $isCalendarPresented,
-//                arrowEdge: .top
-//            ) {
-//                ZStack {
-//                    Color.red
-//                    Text("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅋㅋ")
-//                        .presentationCompactAdaptation(.popover)
-//                }
-//            }
         }
     }
 }
@@ -209,9 +193,12 @@ public struct MealCardView: View {
                 lunchDislikeCount: 5,
                 dinnerDislikeCount: 3,
                 selectedDate: .constant(Date()),
-                onAction: { mealType, actionType in
-                    print("\(mealType) - \(actionType)")
-                }
+                onBreakfastLike: { print("breakfast like") },
+                onBreakfastDislike: { print("breakfast dislike") },
+                onLunchLike: { print("lunch like") },
+                onLunchDislike: { print("lunch dislike") },
+                onDinnerLike: { print("dinner like") },
+                onDinnerDislike: { print("dinner dislike") }
             )
             .padding(16)
             .navigationTitle("학생회관_학생식당")
@@ -219,4 +206,3 @@ public struct MealCardView: View {
         }
     }
 }
-

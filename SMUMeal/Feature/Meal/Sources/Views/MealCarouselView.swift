@@ -42,30 +42,24 @@ public struct MealCarouselView: View {
                             get: { viewModel.choiceDate },
                             set: { viewModel.choiceDate = $0 }
                         ),
-                        onAction: { mealType, actionType in
-                            viewModel.handleAction(mealType: mealType, actionType: actionType)
-                        }
+                        onBreakfastLike: { Task { await viewModel.likeUp(mealType: .breakfast) } },
+                        onBreakfastDislike: { Task { await viewModel.dislikeUp(mealType: .breakfast) } },
+                        onLunchLike: { Task { await viewModel.likeUp(mealType: .lunch) } },
+                        onLunchDislike: { Task { await viewModel.dislikeUp(mealType: .lunch) } },
+                        onDinnerLike: { Task { await viewModel.likeUp(mealType: .dinner) } },
+                        onDinnerDislike: { Task { await viewModel.dislikeUp(mealType: .dinner) } }
                     )
-                    .onAppear {
-                      print("dateString: \(viewModel.choiceDate.displayString)")
-                      print("dateString: \(viewModel.menu.breakfastMenu)")
-                    }
+                    // FIXME: - 스켈레톤 뷰 수정 후 적용하기
+//                    .overlay {
+//                        if viewModel.isLoading {
+//                            SkeletonView(RoundedRectangle(cornerRadius: 20))
+//                        }
+//                    }
                 }
                 .padding([.horizontal, .bottom], 16)
             }
             .task {
-                viewModel.startObserving()
-            }
-            .onDisappear {
-                viewModel.stopObserving()
-            }
-            // MARK: - 식당 변경 시
-            .onChange(of: viewModel.toolBarType) {
-                viewModel.restartObserving()
-            }
-            // MARK: - 날짜 변경 시
-            .onChange(of: viewModel.choiceDate) {
-                viewModel.restartObserving()
+                await viewModel.fetchMeal()
             }
             // MARK: - 툴 바
             .toolbar {
