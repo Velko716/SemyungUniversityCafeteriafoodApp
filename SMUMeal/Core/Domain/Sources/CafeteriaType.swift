@@ -20,4 +20,15 @@ public enum CafeteriaType: String, CaseIterable {
             "예지학사식당"
         }
     }
+    
+    public var collectionType: String {
+        switch self {
+        case .studentCafeteria:
+            "student_cafeteria"
+        case .selfServiceCafeteria:
+            "self_service_cafeteria"
+        case .yejiDormitoryCafeteria:
+            "yeji_cafeteria"
+        }
+    }
 }
