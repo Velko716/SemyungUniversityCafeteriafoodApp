@@ -30,12 +30,17 @@ let project = Project(
                         "Pretendard-SemiBold.ttf",
                         "Pretendard-Thin.ttf",
                     ],
+                    "UIBackgroundModes": [
+                        "remote-notification"
+                    ]
                 ]
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
+            entitlements: "Resources/App.entitlements",
             dependencies: [
-                .feature("Meal")
+                .feature("Meal"),
+                .external(name: "FirebaseMessaging")
             ]
         ),
         .target(
