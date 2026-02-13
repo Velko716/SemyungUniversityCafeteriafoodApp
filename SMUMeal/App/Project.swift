@@ -35,8 +35,7 @@ let project = Project(
             sources: ["Sources/**"],
             resources: ["Resources/**"],
             dependencies: [
-                .feature("Meal"),
-                .ui("DesignSystem"),
+                .feature("Meal")
             ]
         ),
         .target(

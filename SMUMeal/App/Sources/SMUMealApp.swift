@@ -2,7 +2,6 @@ import SwiftUI
 import Meal
 import Repository
 import Network
-import DesignSystem
 
 @main
 struct SMUMealApp: App {
