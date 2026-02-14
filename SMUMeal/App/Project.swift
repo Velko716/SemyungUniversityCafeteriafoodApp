@@ -3,6 +3,12 @@ import ProjectDescriptionHelpers
 
 let project = Project(
     name: "App",
+    settings: .settings(
+        configurations: [
+            .debug(name: "Debug", xcconfig: "Configurations/Config.xcconfig"),
+            .release(name: "Release", xcconfig: "Configurations/Config.xcconfig"),
+        ]
+    ),
     targets: [
         .target(
             name: "App",
@@ -32,7 +38,9 @@ let project = Project(
                     ],
                     "UIBackgroundModes": [
                         "remote-notification"
-                    ]
+                    ],
+                    "API_BASE_URL": "$(API_BASE_URL)",
+                    "API_KEY": "$(API_KEY)"
                 ]
             ),
             sources: ["Sources/**"],
