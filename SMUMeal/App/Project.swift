@@ -48,6 +48,7 @@ let project = Project(
             entitlements: "Configurations/App.entitlements",
             dependencies: [
                 .feature("Meal"),
+                .feature("Settings"),
                 .external(name: "FirebaseMessaging")
             ]
         ),

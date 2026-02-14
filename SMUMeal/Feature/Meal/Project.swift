@@ -5,7 +5,6 @@ let project = Project.make(
     name: "Meal",
     moduleType: .feature,
     dependencies: [
-        .feature("Settings"),
         .ui("Components"),
         .core("Repository"),
         .core("Utility"),

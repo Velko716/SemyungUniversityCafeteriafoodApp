@@ -8,17 +8,21 @@
 import SwiftUI
 import Repository
 import Components
-//import Network
 import Utility
 import Settings
 
-public struct MealCarouselView: View {
+public struct MealCarouselView<SettingDestination: View>: View {
     @State private var viewModel: MealCarouselViewModel
+    private let settingDestination: () -> SettingDestination
 
-    public init(repository: MealRepositoryProtocol) {
+    public init(
+        repository: MealRepositoryProtocol,
+        @ViewBuilder settingDestination: @escaping () -> SettingDestination
+    ) {
         _viewModel = State(
             initialValue: MealCarouselViewModel(repository: repository)
         )
+        self.settingDestination = settingDestination
     }
     
     public var body: some View {
@@ -70,7 +74,7 @@ public struct MealCarouselView: View {
                     viewModel.toolBarType = selectedType
                 }
                 MealTrailingToolbar {
-                    SettingView()
+                    settingDestination()
                 }
             }
         }
