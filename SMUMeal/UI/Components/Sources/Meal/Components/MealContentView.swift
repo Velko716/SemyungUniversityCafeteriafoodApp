@@ -12,61 +12,69 @@ internal struct MealContentView: View {
     let likeCount: Int
     let disLikeCount: Int
     let menuFontSize: CGFloat
-    
+
     let buttonIconSize: CGFloat
     let buttonFontSize: CGFloat
     let buttonVerticalPadding: CGFloat
     let buttonHorizontalPadding: CGFloat
-    
+
     let cardHeight: CGFloat
     let verticalPadding: CGFloat
-    
-    let mealType: MealType
-    let onAction: (MealType, MealActionType) -> Void
-    
+
+    let isLoading: Bool
+
+    let onLike: () -> Void
+    let onDislike: () -> Void
+
     var body: some View {
-        HStack {
-            Text(menu)
-                .font(.pretendard(size: menuFontSize, weight: .medium))
-                .foregroundStyle(Color.gray01)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            // MARK: - 식단 등록되지 않았을 때, 버튼 숨기기
-            if menu == "아직 식단이 등록되지 않았습니다." {
-                EmptyView()
+        Group {
+            if isLoading {
+                SkeletonView(RoundedRectangle(cornerRadius: 8))
             } else {
                 HStack {
-                    CountButton(
-                        countButtonType: .like,
-                        count: likeCount,
-                        iconSize: buttonIconSize,
-                        fontSize: buttonFontSize,
-                        verticalPadding: buttonVerticalPadding,
-                        horizontalPadding: buttonHorizontalPadding,
-                        cornerRadius: 16) {
-                            onAction(mealType, .like)
+                    Text(menu)
+                        .font(.pretendard(size: menuFontSize, weight: .medium))
+                        .foregroundStyle(Color.gray01)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    // MARK: - 식단 등록되지 않았을 때, 버튼 숨기기
+                    if menu == "아직 식단이 등록되지 않았습니다." {
+                        EmptyView()
+                    } else {
+                        HStack {
+                            CountButton(
+                                countButtonType: .like,
+                                count: likeCount,
+                                iconSize: buttonIconSize,
+                                fontSize: buttonFontSize,
+                                verticalPadding: buttonVerticalPadding,
+                                horizontalPadding: buttonHorizontalPadding,
+                                cornerRadius: 16) {
+                                    onLike()
+                                }
+
+                            CountButton(
+                                countButtonType: .disLike,
+                                count: disLikeCount,
+                                iconSize: buttonIconSize,
+                                fontSize: buttonFontSize,
+                                verticalPadding: buttonVerticalPadding,
+                                horizontalPadding: buttonHorizontalPadding,
+                                cornerRadius: 16) {
+                                    onDislike()
+                                }
                         }
-                    
-                    CountButton(
-                        countButtonType: .disLike,
-                        count: disLikeCount,
-                        iconSize: buttonIconSize,
-                        fontSize: buttonFontSize,
-                        verticalPadding: buttonVerticalPadding,
-                        horizontalPadding: buttonHorizontalPadding,
-                        cornerRadius: 16) {
-                            onAction(mealType, .dislike)
-                        }
+                    }
                 }
+                .padding(.horizontal, 8)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.gray02)
+                )
             }
         }
-        .frame(height: cardHeight)
-        .padding(.vertical, verticalPadding)
-        .padding(.horizontal, 8)
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.gray02)
-        )
+        .frame(height: cardHeight + verticalPadding * 2)
     }
 }
 
@@ -82,7 +90,8 @@ internal struct MealContentView: View {
         buttonHorizontalPadding: 10,
         cardHeight: 10,
         verticalPadding: 10,
-        mealType: .breakfast,
-        onAction: { _, _ in }
+        isLoading: false,
+        onLike: {},
+        onDislike: {}
     )
 }

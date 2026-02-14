@@ -20,6 +20,7 @@ public struct MealCardView: View {
     public let breakfastDislikeCount: Int
     public let lunchDislikeCount: Int
     public let dinnerDislikeCount: Int
+    public let isLoading: Bool
 
     @State private var isCalendarPresented: Bool = false
     @Binding private var selectedDate: Date
@@ -42,6 +43,7 @@ public struct MealCardView: View {
         breakfastDislikeCount: Int,
         lunchDislikeCount: Int,
         dinnerDislikeCount: Int,
+        isLoading: Bool = false,
         selectedDate: Binding<Date>,
         onBreakfastLike: @escaping () -> Void,
         onBreakfastDislike: @escaping () -> Void,
@@ -60,6 +62,7 @@ public struct MealCardView: View {
         self.breakfastDislikeCount = breakfastDislikeCount
         self.lunchDislikeCount = lunchDislikeCount
         self.dinnerDislikeCount = dinnerDislikeCount
+        self.isLoading = isLoading
         self._selectedDate = selectedDate
         self.onBreakfastLike = onBreakfastLike
         self.onBreakfastDislike = onBreakfastDislike
@@ -114,6 +117,7 @@ public struct MealCardView: View {
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
                     verticalPadding: verticalPadding,
+                    isLoading: isLoading,
                     onLike: onBreakfastLike,
                     onDislike: onBreakfastDislike
                 )
@@ -141,6 +145,7 @@ public struct MealCardView: View {
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
                     verticalPadding: verticalPadding,
+                    isLoading: isLoading,
                     onLike: onLunchLike,
                     onDislike: onLunchDislike
                 )
@@ -168,6 +173,7 @@ public struct MealCardView: View {
                     buttonHorizontalPadding: buttonHorizontalPadding,
                     cardHeight: cardHeight,
                     verticalPadding: verticalPadding,
+                    isLoading: isLoading,
                     onLike: onDinnerLike,
                     onDislike: onDinnerDislike
                 )
