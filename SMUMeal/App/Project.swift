@@ -37,7 +37,7 @@ let project = Project(
             ),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
-            entitlements: "Resources/App.entitlements",
+            entitlements: "Configurations/App.entitlements",
             dependencies: [
                 .feature("Meal"),
                 .external(name: "FirebaseMessaging")
