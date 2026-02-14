@@ -8,7 +8,6 @@ let project = Project.make(
         .feature("Settings"),
         .ui("Components"),
         .core("Repository"),
-        .core("Network"),
         .core("Utility"),
     ]
 )

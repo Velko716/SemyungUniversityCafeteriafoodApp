@@ -7,7 +7,6 @@
 
 #if DEBUG
 import Foundation
-import Network
 import Domain
 
 public struct MockMealRepository: MealRepositoryProtocol {
@@ -26,6 +25,20 @@ public struct MockMealRepository: MealRepositoryProtocol {
             lunchDislikeCount: 5,
             dinnerDislikeCount: 3
         )
+    }
+    
+    public func postDislike(type collectionType: String, for date: String, meal: Domain.MealType) async throws {
+        
+    }
+    
+    public func postLike(type collectionType: String, for date: String, meal: MealType) async throws {
+        
+    }
+    
+    public func postUnlike(type collectionType: String, for date: String, meal: MealType) async throws {
+    }
+
+    public func postUndislike(type collectionType: String, for date: String, meal: MealType) async throws {
     }
 }
 #endif
