@@ -6,6 +6,7 @@ let project = Project.make(
     moduleType: .core,
     dependencies: [
         .core("Domain"),
-        .core("Common")
+        .core("Common"),
+        .core("Utility")
     ]
 )
