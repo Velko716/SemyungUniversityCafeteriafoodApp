@@ -12,7 +12,7 @@ let project = Project(
     targets: [
         .target(
             name: "App",
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .app,
             bundleId: "com.SemyungUniversityCafeteriafoodApp.ManduU2App",
             deploymentTargets: .iOS("17.0"),
@@ -102,7 +102,7 @@ let project = Project(
         ),
         .target(
             name: "MealWidgetExtension",
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .appExtension,
             bundleId: "com.SemyungUniversityCafeteriafoodApp.ManduU2App.MealWidget",
             deploymentTargets: .iOS("17.0"),
@@ -134,7 +134,7 @@ let project = Project(
         ),
         .target(
             name: "AppTests",
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .unitTests,
             bundleId: "com.SemyungUniversityCafeteriafoodApp.ManduU2AppTests",
             deploymentTargets: .iOS("17.0"),

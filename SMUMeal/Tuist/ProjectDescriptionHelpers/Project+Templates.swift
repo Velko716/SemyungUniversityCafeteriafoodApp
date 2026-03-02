@@ -17,7 +17,7 @@ public extension Project {
 
         let mainTarget = Target.target(
             name: name,
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: moduleType.product,
             bundleId: "com.smumeal.\(name.lowercased())",
             deploymentTargets: .iOS("17.0"),
@@ -37,7 +37,7 @@ public extension Project {
 
             let demoTarget = Target.target(
                 name: "\(name)Demo",
-                destinations: .iOS,
+                destinations: [.iPhone],
                 product: .app,
                 bundleId: "com.smumeal.\(name.lowercased()).demo",
                 deploymentTargets: .iOS("17.0"),
