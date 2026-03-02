@@ -21,6 +21,10 @@ let package = Package(
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk",
             from: "12.8.0"
+        ),
+        .package(
+            url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+            from: "13.0.0"
         )
     ]
 )

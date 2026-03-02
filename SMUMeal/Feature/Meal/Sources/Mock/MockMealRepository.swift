@@ -22,12 +22,11 @@ import Repository
 //            breakfastMenu: "토스트, 우유, 사과",
 //            lunchMenu: "김치찌개, 밥, 계란말이",
 //            dinnerMenu: "돈까스, 샐러드, 미소국",
-//            breakfastLikeCount: 10,
-//            lunchLikeCount: 25,
-//            dinnerLikeCount: 15,
-//            breakfastDislikeCount: 2,
-//            lunchDislikeCount: 5,
-//            dinnerDislikeCount: 3
+//            reactions: [
+//                "breakfast": Reaction(likeCount: 10, dislikeCount: 2),
+//                "lunch": Reaction(likeCount: 25, dislikeCount: 5),
+//                "dinner": Reaction(likeCount: 15, dislikeCount: 3),
+//            ]
 //        )
 //    }
 //}
