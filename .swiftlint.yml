@@ -69,166 +69,166 @@ opt_in_rules:
   - private_over_fileprivate    # fileprivate 대신 private 권장
   - yoda_condition               # if 1 == x 대신 if x == 1
 
-# ============================================================================
-# 규칙별 상세 설정
-# ============================================================================
+ ============================================================================
+ 규칙별 상세 설정
+ ============================================================================
 
-## 식별자 이름 규칙
-#identifier_name:
-#  min_length:
-#    warning: 2
-#    error: 1
-#  max_length:
-#    warning: 50
-#    error: 60
-#  excluded:
-#    - id
-#    - x
-#    - y
-#    - i
-#    - j
-#    - k
-#    - db
-#    - vm
-#    - vc
-#    - ui
-#    - to
-#    - at
-#    - q   # Query 약어
-#    - p   # Player 약어
-#    - t   # Time 약어
-#    - g   # Group 약어
-#
-## 타입 이름 규칙
-#type_name:
-#  min_length:
-#    warning: 3
-#    error: 2
-#  max_length:
-#    warning: 50
-#    error: 60
-#
-## 파일 길이
-#file_length:
-#  warning: 500
-#  error: 700
-#  ignore_comment_only_lines: true
-#
-## 타입 본문 길이
-#type_body_length:
-#  warning: 300
-#  error: 400
-#
-## 함수 본문 길이
-#function_body_length:
-#  warning: 60
-#  error: 100
-#
-## 클로저 본문 길이
-#closure_body_length:
-#  warning: 30
-#  error: 50
-#
-## 함수 파라미터 수
-#function_parameter_count:
-#  warning: 6
-#  error: 8
-#  ignores_default_parameters: true
-#
-## 줄 길이
-#line_length:
-#  warning: 120
-#  error: 150
-#  ignores_urls: true
-#  ignores_function_declarations: true
-#  ignores_comments: true
-#  ignores_interpolated_strings: true
-#
-## Cyclomatic Complexity (순환 복잡도)
-#cyclomatic_complexity:
-#  warning: 15
-#  error: 25
-#  ignores_case_statements: true
-#
-## 중첩 깊이
-#nesting:
-#  type_level:
-#    warning: 3
-#    error: 5
-#  function_level:
-#    warning: 4
-#    error: 6
-#
-## 강제 캐스트
-#force_cast:
-#  severity: warning  # error로 변경 가능
-#
-## 강제 try
-#force_try:
-#  severity: warning  # error로 변경 가능
-#
-## 강제 언래핑
-#force_unwrapping:
-#  severity: warning
-#
-## Large Tuple
-#large_tuple:
-#  warning: 3
-#  error: 4
-#
-## MARK 형식
-#mark:
-#  severity: warning
-#
-## TODO/FIXME 경고
-#todo:
-#  severity: warning
-#
-## 빈 파일 경고 (Custom regex)
-## empty_xctest_method 대신 사용
-#
-## ============================================================================
-## 커스텀 규칙
-## ============================================================================
-#custom_rules:
-#  # print 문 금지 (Logger 사용 권장)
-#  no_print_statement:
-#    name: "No Print Statement"
-#    regex: "\\bprint\\s*\\("
-#    message: "print() 대신 Logger를 사용하세요. 디버그 코드가 남아있다면 제거해주세요."
-#    severity: warning
-#
-#  # FIXME 주석 경고
-#  fixme_without_issue:
-#    name: "FIXME Without Context"
-#    regex: "FIXME(?!:.*#\\d+)"
-#    message: "FIXME는 이슈 번호나 구체적인 설명을 포함해야 합니다."
-#    severity: warning
-#
-#  # 빈 문자열 기본값 경고
-#  empty_string_default:
-#    name: "Empty String Default"
-#    regex: '\\?\?\\s*""'
-#    message: "빈 문자열 기본값 대신 Optional 처리를 고려하세요."
-#    severity: warning
-#
-#  # FirebaseAuthManager.shared 직접 접근 경고 (ViewModel에서)
-#  direct_singleton_access:
-#    name: "Direct Singleton Access in ViewModel"
-#    regex: "(FirebaseAuthManager|FirestoreManager|NotificationManager)\\.shared"
-#    message: "ViewModel에서 싱글톤 직접 접근 대신 의존성 주입을 고려하세요."
-#    severity: warning
-#    match_kinds:
-#      - identifier
-#
-#  # fatalError 사용 경고
-#  fatal_error_usage:
-#    name: "Fatal Error Usage"
-#    regex: "\\bfatalError\\s*\\("
-#    message: "fatalError 대신 적절한 에러 처리를 고려하세요."
-#    severity: warning
-#
-## ============================================================================
-## 리포터 설정
-## ============================================================================
-#reporter: "xcode"  # Xcode에서 인라인 경고/에러 표시
+# 식별자 이름 규칙
+identifier_name:
+  min_length:
+    warning: 2
+    error: 1
+  max_length:
+    warning: 50
+    error: 60
+  excluded:
+    - id
+    - x
+    - y
+    - i
+    - j
+    - k
+    - db
+    - vm
+    - vc
+    - ui
+    - to
+    - at
+    - q   # Query 약어
+    - p   # Player 약어
+    - t   # Time 약어
+    - g   # Group 약어
+
+# 타입 이름 규칙
+type_name:
+  min_length:
+    warning: 3
+    error: 2
+  max_length:
+    warning: 50
+    error: 60
+
+# 파일 길이
+file_length:
+  warning: 500
+  error: 700
+  ignore_comment_only_lines: true
+
+# 타입 본문 길이
+type_body_length:
+  warning: 300
+  error: 400
+
+# 함수 본문 길이
+function_body_length:
+  warning: 60
+  error: 100
+
+# 클로저 본문 길이
+closure_body_length:
+  warning: 30
+  error: 50
+
+# 함수 파라미터 수
+function_parameter_count:
+  warning: 6
+  error: 8
+  ignores_default_parameters: true
+
+# 줄 길이
+line_length:
+  warning: 120
+  error: 150
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_interpolated_strings: true
+
+# Cyclomatic Complexity (순환 복잡도)
+cyclomatic_complexity:
+  warning: 15
+  error: 25
+  ignores_case_statements: true
+
+# 중첩 깊이
+nesting:
+  type_level:
+    warning: 3
+    error: 5
+  function_level:
+    warning: 4
+    error: 6
+
+# 강제 캐스트
+force_cast:
+  severity: warning  # error로 변경 가능
+
+# 강제 try
+force_try:
+  severity: warning  # error로 변경 가능
+
+# 강제 언래핑
+force_unwrapping:
+  severity: warning
+
+# Large Tuple
+large_tuple:
+  warning: 3
+  error: 4
+
+# MARK 형식
+mark:
+  severity: warning
+
+# TODO/FIXME 경고
+todo:
+  severity: warning
+
+# 빈 파일 경고 (Custom regex)
+# empty_xctest_method 대신 사용
+
+# ============================================================================
+# 커스텀 규칙
+# ============================================================================
+custom_rules:
+  # print 문 금지 (Logger 사용 권장)
+  no_print_statement:
+    name: "No Print Statement"
+    regex: "\\bprint\\s*\\("
+    message: "print() 대신 Logger를 사용하세요. 디버그 코드가 남아있다면 제거해주세요."
+    severity: warning
+
+  # FIXME 주석 경고
+  fixme_without_issue:
+    name: "FIXME Without Context"
+    regex: "FIXME(?!:.*#\\d+)"
+    message: "FIXME는 이슈 번호나 구체적인 설명을 포함해야 합니다."
+    severity: warning
+
+  # 빈 문자열 기본값 경고
+  empty_string_default:
+    name: "Empty String Default"
+    regex: '\\?\?\\s*""'
+    message: "빈 문자열 기본값 대신 Optional 처리를 고려하세요."
+    severity: warning
+
+  # FirebaseAuthManager.shared 직접 접근 경고 (ViewModel에서)
+  direct_singleton_access:
+    name: "Direct Singleton Access in ViewModel"
+    regex: "(FirebaseAuthManager|FirestoreManager|NotificationManager)\\.shared"
+    message: "ViewModel에서 싱글톤 직접 접근 대신 의존성 주입을 고려하세요."
+    severity: warning
+    match_kinds:
+      - identifier
+
+  # fatalError 사용 경고
+  fatal_error_usage:
+    name: "Fatal Error Usage"
+    regex: "\\bfatalError\\s*\\("
+    message: "fatalError 대신 적절한 에러 처리를 고려하세요."
+    severity: warning
+
+# ============================================================================
+# 리포터 설정
+# ============================================================================
+reporter: "xcode"  # Xcode에서 인라인 경고/에러 표시
