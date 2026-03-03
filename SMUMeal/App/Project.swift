@@ -12,7 +12,7 @@ let project = Project(
     targets: [
         .target(
             name: "App",
-            destinations: [.iPhone],
+            destinations: [.iPhone, .iPad],
             product: .app,
             bundleId: "com.SemyungUniversityCafeteriafoodApp.ManduU2App",
             deploymentTargets: .iOS("17.0"),
@@ -102,7 +102,7 @@ let project = Project(
         ),
         .target(
             name: "MealWidgetExtension",
-            destinations: [.iPhone],
+            destinations: [.iPhone, .iPad],
             product: .appExtension,
             bundleId: "com.SemyungUniversityCafeteriafoodApp.ManduU2App.MealWidget",
             deploymentTargets: .iOS("17.0"),
@@ -110,6 +110,7 @@ let project = Project(
                 with: [
                     "CFBundleShortVersionString": "2.0.0",
                     "CFBundleVersion": "1",
+                    "CFBundleDisplayName": "학식 위젯",
                     "API_BASE_URL": "$(API_BASE_URL)",
                     "API_KEY": "$(API_KEY)",
                     "NSExtension": [
