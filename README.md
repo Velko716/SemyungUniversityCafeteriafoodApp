@@ -5,11 +5,11 @@
 매일 바뀌는 학식 메뉴를 한눈에 확인하고, 홈 화면 위젯으로 빠르게 접근할 수 있습니다.
 
   <div align="center">
-    <img src="https://github.com/user-attachments/assets/5372a3fd-1437-48c0-b954-797a4fa99766" width="190" height="410" />
-    <img src="https://github.com/user-attachments/assets/e0cd0c37-b8db-4a01-88bd-bf8292026fb5" width="190" height="410" />
-    <img src="https://github.com/user-attachments/assets/680a47b7-4c5f-48c1-982c-1d69333d67d9" width="190" height="410" />
-    <img src="https://github.com/user-attachments/assets/212abea0-3d56-4506-b726-7d626a51ea2d" width="190" height="410" />
-    <img src="https://github.com/user-attachments/assets/0eb49052-48c8-40a2-8510-c9a040ef87ec" width="190" height="410" />
+    <img src="https://github.com/user-attachments/assets/5372a3fd-1437-48c0-b954-797a4fa99766" width="160" height="410" />
+    <img src="https://github.com/user-attachments/assets/e0cd0c37-b8db-4a01-88bd-bf8292026fb5" width="160" height="410" />
+    <img src="https://github.com/user-attachments/assets/680a47b7-4c5f-48c1-982c-1d69333d67d9" width="160" height="410" />
+    <img src="https://github.com/user-attachments/assets/212abea0-3d56-4506-b726-7d626a51ea2d" width="160" height="410" />
+    <img src="https://github.com/user-attachments/assets/0eb49052-48c8-40a2-8510-c9a040ef87ec" width="160" height="410" />
   </div>
 
   <br/>
