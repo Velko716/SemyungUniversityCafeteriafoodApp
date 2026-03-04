@@ -1,69 +1,62 @@
-# 세명대학교 학식 알리미 앱
+# 세명대학교 학식 알리미 (iOS)
 
-세명대학교 학식 메뉴를 간편하게 확인하고 알림을 받을 수 있는 어플리케이션 앱 입니다. (1인 개발)
+세명대학교 학식 알리미는 세명대학교 학생들을 위한 학생식당 메뉴 정보 앱입니다.
 
+매일 바뀌는 학식 메뉴를 한눈에 확인하고, 홈 화면 위젯으로 빠르게 접근할 수 있습니다.
 
-iOS 다운로드 링크 : https://apps.apple.com/app/세명대학교-학식-알리미/id6479690864
+  <div align="center">
+    <img src="https://github.com/user-attachments/assets/5372a3fd-1437-48c0-b954-797a4fa99766" width="190" height="410" />
+    <img src="https://github.com/user-attachments/assets/e0cd0c37-b8db-4a01-88bd-bf8292026fb5" width="190" height="410" />
+    <img src="https://github.com/user-attachments/assets/680a47b7-4c5f-48c1-982c-1d69333d67d9" width="190" height="410" />
+    <img src="https://github.com/user-attachments/assets/212abea0-3d56-4506-b726-7d626a51ea2d" width="190" height="410" />
+    <img src="https://github.com/user-attachments/assets/0eb49052-48c8-40a2-8510-c9a040ef87ec" width="190" height="410" />
+  </div>
 
+  <br/>
 
-Android 다운로드 링크 : https://play.google.com/store/apps/details?id=com.SemyungUniversityCafeteriafoodApp.ManduU2App
-
----
-
-
-## 개발 계기
-
-학식 메뉴를 확인할 수 있는 앱이 존재는 하지만, 그 앱 안에서 개별적으로 따로 메뉴를 확인하러 가야하고, 또 주간 단위로 학식 메뉴가 나오기 때문에 메뉴를 한눈에 보기 어려웠습니다.
-
-
-그래서 이러한 단점을 보완하고, 추가로 몇가지 기능을 넣어 앱을 완성하면 좋을꺼 같아서 개발을 시작하게 되었습니다.
-
-
-[앱의 기능]
-
-- 학교 식당 메뉴를 확인할 수 있습니다.
-
-- 배식시간에 맞춰 알림을 받으실 수 있습니다.
-
-- 좋아요, 싫어요 기능을 이용하실 수 있습니다.
-
-- 홈화면, 잠금화면 위젯을 식당 메뉴으로 식당 메뉴를 확인할 수 있습니다.
-
-
+<a href="https://apps.apple.com/kr/app/%EC%84%B8%EB%AA%85%EB%8C%80%ED%95%99%EA%B5%90-%ED%95%99%EC%8B%9D-%EC%95%8C%EB%A6%AC%EB%AF%B8/id6479690864">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/75518683/268173445-322afec8-38fa-46ba-bbe0-3fffd0c93f5b.png" alt="appstore" height="80"/>
+</a>
 
 ---
 
+## 📆 프로젝트 기간
 
-## 사용 플랫폼
-
-[ Firebase ]
-
-- FireStore Database
-  
-- FCM
-
-## 사용 언어 및 라이브러리
-[ Python ] Selenium 자동화 웹 크롤링 사용
-- 추후 예정 
-
-[ Java ] Android Studio 에서 사용
-- 추후 예정
-
-[ Swift ]
-- UIKit
-  
-- SwiftUI
-  
-- FSCalendar
-  
-- WidgetKit
-
+- 개발 기간: `2024.03 ~ 2024.05`
 
 ---
 
-## 시스템 아키텍처 설계
-1. 세명대학교 포탈 시스템에 매주 업데이트 되는 식단표를 **Selenium을 통해 크롤링하고 csv파일로 만듭니다.**
-2. 만들어진 csv파일을 Firestore Database 삽입합니다.
-3. 구조가 맞춰진 앱은 해당하는 날짜의 식단 메뉴를 보여줍니다.
+## ♻️ 최소 버전
 
+<div align="left">
+  <img src="https://img.shields.io/badge/iOS-17%2B-black?style=for-the-badge&logo=apple&logoColor=white" />
+</div>
 
+---
+
+## 🛠️ 기술 스택
+
+### Environment
+<div align="left">
+<img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white" />
+<img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" />
+<img src="https://img.shields.io/badge/SPM-FA7343?style=for-the-badge&logo=swift&logoColor=white" />
+<img src="https://img.shields.io/badge/Tuist-8A2BE2?style=for-the-badge&logoColor=white" />
+</div>
+
+### Development
+<div align="left">
+<img src="https://img.shields.io/badge/Xcode-007ACC?style=for-the-badge&logo=Xcode&logoColor=white" />
+<img src="https://img.shields.io/badge/UIKit-2396F3?style=for-the-badge&logo=uikit&logoColor=white" />
+<img src="https://img.shields.io/badge/SwiftUI-42A5F5?style=for-the-badge&logo=swift&logoColor=white" />
+<img src="https://img.shields.io/badge/WidgetKit-1C1C1E?style=for-the-badge&logo=apple&logoColor=white" />
+</div>
+
+---
+
+## 📦 라이브러리
+
+| Library | Version |
+|:-----:|:-----:|
+| [**Firebase**](https://github.com/firebase/firebase-ios-sdk.git) | 12.9.0 |
+| [**Google Mobile Ads**](https://github.com/googleads/swift-package-manager-google-mobile-ads.git) | 13.0.0 |
